@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7AABCFFB1F9DC0AE0038DF50 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */; };
 		7ACC53441F45A9560058755F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53431F45A9560058755F /* AppDelegate.swift */; };
 		7ACC53461F45A9560058755F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53451F45A9560058755F /* ViewController.swift */; };
 		7ACC53481F45A9560058755F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ACC53471F45A9560058755F /* Assets.xcassets */; };
-		7ACC534B1F45A9560058755F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7ACC53491F45A9560058755F /* Main.storyboard */; };
+		7ACC53591F45A9DB0058755F /* AppItemViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53531F45A9DB0058755F /* AppItemViewVC.swift */; };
+		7ACC535A1F45A9DB0058755F /* AppItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ACC53541F45A9DB0058755F /* AppItemView.xib */; };
+		7ACC535B1F45A9DB0058755F /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53551F45A9DB0058755F /* AppModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		7ACC53401F45A9560058755F /* ZSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ACC53431F45A9560058755F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ACC53451F45A9560058755F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7ACC53471F45A9560058755F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7ACC534A1F45A9560058755F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7ACC534C1F45A9560058755F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7ACC53531F45A9DB0058755F /* AppItemViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppItemViewVC.swift; sourceTree = "<group>"; };
+		7ACC53541F45A9DB0058755F /* AppItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppItemView.xib; sourceTree = "<group>"; };
+		7ACC53551F45A9DB0058755F /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,10 +58,13 @@
 		7ACC53421F45A9560058755F /* ZSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */,
+				7ACC53531F45A9DB0058755F /* AppItemViewVC.swift */,
+				7ACC53541F45A9DB0058755F /* AppItemView.xib */,
+				7ACC53551F45A9DB0058755F /* AppModel.swift */,
 				7ACC53431F45A9560058755F /* AppDelegate.swift */,
 				7ACC53451F45A9560058755F /* ViewController.swift */,
 				7ACC53471F45A9560058755F /* Assets.xcassets */,
-				7ACC53491F45A9560058755F /* Main.storyboard */,
 				7ACC534C1F45A9560058755F /* Info.plist */,
 			);
 			path = ZSwitch;
@@ -88,11 +97,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = zhangshibo;
 				TargetAttributes = {
 					7ACC533F1F45A9560058755F = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -121,7 +131,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ACC53481F45A9560058755F /* Assets.xcassets in Resources */,
-				7ACC534B1F45A9560058755F /* Main.storyboard in Resources */,
+				7ACC535A1F45A9DB0058755F /* AppItemView.xib in Resources */,
+				7AABCFFB1F9DC0AE0038DF50 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,21 +145,12 @@
 			files = (
 				7ACC53461F45A9560058755F /* ViewController.swift in Sources */,
 				7ACC53441F45A9560058755F /* AppDelegate.swift in Sources */,
+				7ACC535B1F45A9DB0058755F /* AppModel.swift in Sources */,
+				7ACC53591F45A9DB0058755F /* AppItemViewVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		7ACC53491F45A9560058755F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7ACC534A1F45A9560058755F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		7ACC534D1F45A9560058755F /* Debug */ = {
@@ -161,7 +163,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -169,7 +173,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -211,7 +219,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -219,7 +229,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -252,7 +266,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = shibo.ZSwitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -265,7 +280,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = shibo.ZSwitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -288,6 +304,7 @@
 				7ACC53511F45A9560058755F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
