@@ -6,12 +6,18 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="AppItemViewVC" customModule="ZSwitch" customModuleProvider="target"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="AppItemView" customModule="ZSwitch" customModuleProvider="target">
+            <connections>
+                <outlet property="imageView" destination="a93-TU-wqb" id="lbV-6b-kjB"/>
+                <outlet property="label" destination="JMP-SG-LZK" id="ArN-ym-QGa"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="NDC-y4-Cs6"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="80" height="100"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-SG-LZK">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="20"/>

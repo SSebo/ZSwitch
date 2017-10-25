@@ -16,13 +16,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let screenRect = NSScreen.main?.frame
-        window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .fullSizeContentView, backing: NSWindow.BackingStoreType.buffered, defer: false)
-        window?.backgroundColor = NSColor.red
+        window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
+        window?.backgroundColor = NSColor.clear
+        window?.isOpaque = false
+        window?.ignoresMouseEvents = false
         controller = ViewController()
         let content = window!.contentView! as NSView
         let view = controller!.view
         content.addSubview(view)
-        window!.makeKeyAndOrderFront(nil)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
