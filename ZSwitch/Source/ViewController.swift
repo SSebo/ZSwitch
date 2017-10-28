@@ -8,6 +8,7 @@
 
 import Cocoa
 
+
 var itemExpectWidth = 100.0
 var itemActualWidth = 100.0
 let screenRect = NSScreen.main?.frame
@@ -19,7 +20,6 @@ var actualLeftRightMargin = 0.0
 class ViewController: NSViewController {
     
     var timer = Timer()
-    let hotKey = HotKey(key: .tab, modifiers: [.command, .option])
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
     var appItemViews:[AppItemView] {
@@ -62,7 +62,7 @@ class ViewController: NSViewController {
                 let appItem = AppItemView()
                 appItem.appModel = appModel
                 
-                appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth+gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:100)
+                appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:100)
                 appItemViews.append(appItem)
             }
             self.appItemViews = appItemViews
@@ -77,12 +77,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        hotKey.keyDownHandler = {
-            NSApp.activate(ignoringOtherApps: true)
-            NSApp.windows[0].orderFront(nil)
-        }
-
+        NotificationCenter.default.addObserver(self, selector: #selector(keyChange), name: NSNotification.Name(rawValue: "keychange"), object: nil)
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { (_)  in
             let ws = NSWorkspace.shared
             var tmpModels:[AppModel] = []
@@ -97,9 +92,12 @@ class ViewController: NSViewController {
         
     }
     
+    @objc func keyChange(notification: Notification) {
+        NSLog("\(notification)")
+    }
+    
     override func viewWillAppear() {
         super.viewWillAppear()
-        
     }
 
     override func mouseDown(with theEvent: NSEvent) {
@@ -112,5 +110,6 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+
 }
 

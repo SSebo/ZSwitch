@@ -7,21 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B1781FA2F9080070E220 /* KeyboardHook.m */; };
+		7A34B17D1FA3022A0070E220 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B17C1FA3022A0070E220 /* Key.swift */; };
 		7AABCFFB1F9DC0AE0038DF50 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */; };
 		7ABCB0EE1FA08AC900E09570 /* ZSwitchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB0ED1FA08AC900E09570 /* ZSwitchUITests.swift */; };
 		7ABCB0FC1FA08AFA00E09570 /* ZSwitchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB0FB1FA08AFA00E09570 /* ZSwitchTests.swift */; };
-		7ABCB1051FA08C8900E09570 /* ModifierFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1031FA08C8900E09570 /* ModifierFlagsTests.swift */; };
-		7ABCB1061FA08C8900E09570 /* KeyComboTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1041FA08C8900E09570 /* KeyComboTests.swift */; };
-		7ABCB10C1FA08CF200E09570 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1071FA08CF200E09570 /* HotKey.swift */; };
-		7ABCB10D1FA08CF200E09570 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1071FA08CF200E09570 /* HotKey.swift */; };
-		7ABCB10E1FA08CF200E09570 /* HotKeysController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1081FA08CF200E09570 /* HotKeysController.swift */; };
-		7ABCB10F1FA08CF200E09570 /* HotKeysController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1081FA08CF200E09570 /* HotKeysController.swift */; };
-		7ABCB1101FA08CF200E09570 /* KeyCombo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1091FA08CF200E09570 /* KeyCombo.swift */; };
-		7ABCB1111FA08CF200E09570 /* KeyCombo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB1091FA08CF200E09570 /* KeyCombo.swift */; };
-		7ABCB1121FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB10A1FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift */; };
-		7ABCB1131FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB10A1FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift */; };
-		7ABCB1141FA08CF200E09570 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB10B1FA08CF200E09570 /* Key.swift */; };
-		7ABCB1151FA08CF200E09570 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB10B1FA08CF200E09570 /* Key.swift */; };
 		7ACC53441F45A9560058755F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53431F45A9560058755F /* AppDelegate.swift */; };
 		7ACC53461F45A9560058755F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC53451F45A9560058755F /* ViewController.swift */; };
 		7ACC53481F45A9560058755F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ACC53471F45A9560058755F /* Assets.xcassets */; };
@@ -48,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7A34B1761FA2F9080070E220 /* ZSwitch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZSwitch-Bridging-Header.h"; sourceTree = "<group>"; };
+		7A34B1771FA2F9080070E220 /* KeyboardHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardHook.h; sourceTree = "<group>"; };
+		7A34B1781FA2F9080070E220 /* KeyboardHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardHook.m; sourceTree = "<group>"; };
+		7A34B17C1FA3022A0070E220 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		7ABCB0E61FA08A0C00E09570 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		7ABCB0EB1FA08AC900E09570 /* ZSwitchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZSwitchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,13 +50,6 @@
 		7ABCB0F91FA08AF900E09570 /* ZSwitchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZSwitchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ABCB0FB1FA08AFA00E09570 /* ZSwitchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZSwitchTests.swift; sourceTree = "<group>"; };
 		7ABCB0FD1FA08AFA00E09570 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7ABCB1031FA08C8900E09570 /* ModifierFlagsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifierFlagsTests.swift; sourceTree = "<group>"; };
-		7ABCB1041FA08C8900E09570 /* KeyComboTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyComboTests.swift; sourceTree = "<group>"; };
-		7ABCB1071FA08CF200E09570 /* HotKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
-		7ABCB1081FA08CF200E09570 /* HotKeysController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeysController.swift; sourceTree = "<group>"; };
-		7ABCB1091FA08CF200E09570 /* KeyCombo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombo.swift; sourceTree = "<group>"; };
-		7ABCB10A1FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEventModifierFlags+HotKey.swift"; sourceTree = "<group>"; };
-		7ABCB10B1FA08CF200E09570 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		7ACC53401F45A9560058755F /* ZSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ACC53431F45A9560058755F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ACC53451F45A9560058755F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -98,27 +85,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7ABCB0CA1FA0854D00E09570 /* HotKey */ = {
-			isa = PBXGroup;
-			children = (
-				7ABCB1071FA08CF200E09570 /* HotKey.swift */,
-				7ABCB1081FA08CF200E09570 /* HotKeysController.swift */,
-				7ABCB10B1FA08CF200E09570 /* Key.swift */,
-				7ABCB1091FA08CF200E09570 /* KeyCombo.swift */,
-				7ABCB10A1FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift */,
-			);
-			path = HotKey;
-			sourceTree = "<group>";
-		};
 		7ABCB0CB1FA0857700E09570 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7A34B17C1FA3022A0070E220 /* Key.swift */,
+				7A34B1771FA2F9080070E220 /* KeyboardHook.h */,
+				7A34B1781FA2F9080070E220 /* KeyboardHook.m */,
 				7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */,
 				7ACC53531F45A9DB0058755F /* AppItemView.swift */,
 				7ACC53541F45A9DB0058755F /* AppItemView.xib */,
 				7ACC53551F45A9DB0058755F /* AppModel.swift */,
 				7ACC53431F45A9560058755F /* AppDelegate.swift */,
 				7ACC53451F45A9560058755F /* ViewController.swift */,
+				7A34B1761FA2F9080070E220 /* ZSwitch-Bridging-Header.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -144,8 +123,6 @@
 			isa = PBXGroup;
 			children = (
 				7ABCB0FB1FA08AFA00E09570 /* ZSwitchTests.swift */,
-				7ABCB1041FA08C8900E09570 /* KeyComboTests.swift */,
-				7ABCB1031FA08C8900E09570 /* ModifierFlagsTests.swift */,
 				7ABCB0FD1FA08AFA00E09570 /* Info.plist */,
 			);
 			path = ZSwitchTests;
@@ -175,7 +152,6 @@
 		7ACC53421F45A9560058755F /* ZSwitch */ = {
 			isa = PBXGroup;
 			children = (
-				7ABCB0CA1FA0854D00E09570 /* HotKey */,
 				7ABCB0CB1FA0857700E09570 /* Source */,
 				7ACC53471F45A9560058755F /* Assets.xcassets */,
 				7ACC534C1F45A9560058755F /* Info.plist */,
@@ -326,14 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7ABCB10F1FA08CF200E09570 /* HotKeysController.swift in Sources */,
-				7ABCB1131FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift in Sources */,
-				7ABCB1051FA08C8900E09570 /* ModifierFlagsTests.swift in Sources */,
-				7ABCB1061FA08C8900E09570 /* KeyComboTests.swift in Sources */,
 				7ABCB0FC1FA08AFA00E09570 /* ZSwitchTests.swift in Sources */,
-				7ABCB1151FA08CF200E09570 /* Key.swift in Sources */,
-				7ABCB1111FA08CF200E09570 /* KeyCombo.swift in Sources */,
-				7ABCB10D1FA08CF200E09570 /* HotKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,13 +312,10 @@
 			files = (
 				7ACC53461F45A9560058755F /* ViewController.swift in Sources */,
 				7ACC53441F45A9560058755F /* AppDelegate.swift in Sources */,
-				7ABCB1141FA08CF200E09570 /* Key.swift in Sources */,
-				7ABCB1101FA08CF200E09570 /* KeyCombo.swift in Sources */,
+				7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */,
 				7ACC535B1F45A9DB0058755F /* AppModel.swift in Sources */,
-				7ABCB10E1FA08CF200E09570 /* HotKeysController.swift in Sources */,
-				7ABCB10C1FA08CF200E09570 /* HotKey.swift in Sources */,
-				7ABCB1121FA08CF200E09570 /* NSEventModifierFlags+HotKey.swift in Sources */,
 				7ACC53591F45A9DB0058755F /* AppItemView.swift in Sources */,
+				7A34B17D1FA3022A0070E220 /* Key.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,11 +517,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZSwitch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.boz88.ZSwitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZSwitch/Source/ZSwitch-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
@@ -565,11 +534,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZSwitch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.boz88.ZSwitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZSwitch/Source/ZSwitch-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};

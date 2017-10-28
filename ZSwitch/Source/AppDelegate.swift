@@ -15,6 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var controller: NSViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let _ = acquirePrivileges()
+        KeyboardHook.start()
+        
         let screenRect = NSScreen.main?.frame
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.backgroundColor = NSColor.clear
@@ -30,6 +33,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
+    func acquirePrivileges() -> Bool {
+        let trusted = kAXTrustedCheckOptionPrompt.takeUnretainedValue()
+        let privOptions = [trusted: true] as CFDictionary
+        let accessEnabled = AXIsProcessTrustedWithOptions(privOptions)
+//        if accessEnabled != true {
+//            let alert = NSAlert()
+//            alert.messageText = "Enable Maxxxro"
+//            alert.informativeText = "Once you have enabled Maxxxro in System Preferences, click OK."
+//            alert.beginSheetModal(for: self.window!, completionHandler: { response in
+//                if AXIsProcessTrustedWithOptions(privOptions) == true {
+////                    self.startup()
+//                } else {
+//                    NSApp.terminate(self)
+//                }
+//            })
+//        }
+        return accessEnabled == true
+    }
 
 }
 
