@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef void (^keyEventCallback)(int, int);
+
 @interface KeyboardHook : NSObject
 
-+(void) start;
-
++ (void) start: (void(^)(int, int)) block;
 @end

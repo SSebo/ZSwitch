@@ -8,17 +8,19 @@
 
 import Cocoa
 
-
 var itemExpectWidth = 100.0
 var itemActualWidth = 100.0
 let screenRect = NSScreen.main?.frame
 let gapWidth = 4.0
 let leftRightMinMargin = 10.0
 var actualLeftRightMargin = 0.0
-
+let KeyDown = 10
+let KeyUp = 11
+let ModifiersChange = 12
 
 class ViewController: NSViewController {
-    
+
+    var isCommandPressed = false
     var timer = Timer()
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
@@ -77,7 +79,8 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyChange), name: NSNotification.Name(rawValue: "keychange"), object: nil)
+        KeyboardHook.start(keyChange)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyChange), name: NSNotification.Name(rawValue: "keychange"), object: nil)
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { (_)  in
             let ws = NSWorkspace.shared
             var tmpModels:[AppModel] = []
@@ -91,9 +94,14 @@ class ViewController: NSViewController {
         })
         
     }
-    
-    @objc func keyChange(notification: Notification) {
-        NSLog("\(notification)")
+        
+    @objc func keyChange(_ keycode: Int32, _ type: Int32) -> Void {
+        NSLog("keycode: \(keycode) type: \(type)")
+        if (UInt32(keycode) == Key.command.carbonKeyCode) {
+            self.isCommandPressed = !self.isCommandPressed
+            NSLog("commmand status: \(self.isCommandPressed)")
+        }
+
     }
     
     override func viewWillAppear() {

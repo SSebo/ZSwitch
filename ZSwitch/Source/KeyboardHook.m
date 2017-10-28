@@ -21,19 +21,24 @@ struct keyEvent {
     CGEventType type;
 } KeyEvent;
 
+//typedef void (^keyEventCallback)(int, int);
+
+static void (^callback)(int, int);
+
 CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
     int64_t keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
     
-    if (type == kCGEventKeyUp) {
-        NSLog(@"key up %lld", keycode);
-    } else if (type == kCGEventKeyDown) {
-        NSLog(@"key down %lld", keycode);
-    } else if (type == kCGEventFlagsChanged){
-        NSLog(@"flag change %lld", keycode);
-    }
+//    if (type == kCGEventKeyUp) {
+//        NSLog(@"key up %lld", keycode);
+//    } else if (type == kCGEventKeyDown) {
+//        NSLog(@"key down %lld", keycode);
+//    } else if (type == kCGEventFlagsChanged){
+//        NSLog(@"flag change %lld", keycode);
+//    }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"keychange"
-                                                        object: [NSString stringWithFormat:@"%lld::%u", keycode, type]];
+//    [[NSNotificationCenter defaultCenter] postNotificationName: @"keychange"
+//                                                        object: [NSString stringWithFormat:@"%lld %u", keycode, type]];
+    callback((int)keycode, (int)type);
     if (keycode == 55) { // intercept macOS default behavior
         isCommandPressed = !isCommandPressed;
         NSLog(@"command pressed: %hhd", isCommandPressed);
@@ -50,7 +55,8 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
     return event;
 }
 
-+ (void) start {
++ (void) start: (void(^)(int, int)) block {
+    callback = block;
     CFRunLoopSourceRef runLoopSource;
     CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp) | CGEventMaskBit(kCGEventFlagsChanged);
     CFMachPortRef eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault,                                                                                         mask, myCGEventCallback, NULL);

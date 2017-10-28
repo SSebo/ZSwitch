@@ -15,9 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var controller: NSViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let _ = acquirePrivileges()
-        KeyboardHook.start()
-        
+        let _ = acquirePrivileges()        
         let screenRect = NSScreen.main?.frame
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.backgroundColor = NSColor.clear
@@ -39,8 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let accessEnabled = AXIsProcessTrustedWithOptions(privOptions)
 //        if accessEnabled != true {
 //            let alert = NSAlert()
-//            alert.messageText = "Enable Maxxxro"
-//            alert.informativeText = "Once you have enabled Maxxxro in System Preferences, click OK."
+//            alert.messageText = "Enable SmartSwitcher"
+//            alert.informativeText = "Once you have enabled SmartSwitcher in System Preferences, click OK."
 //            alert.beginSheetModal(for: self.window!, completionHandler: { response in
 //                if AXIsProcessTrustedWithOptions(privOptions) == true {
 ////                    self.startup()
