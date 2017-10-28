@@ -45,9 +45,9 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
     }
     
     // 48 is tab, 12 is q
-//    if (keycode == 48 && isCommandPressed) {
-//        return nil;
-//    }
+    if (keycode == 48 && isCommandPressed) {
+        return nil;
+    }
     if (keycode == 12 && isCommandPressed && NSApp.active) {
         return nil;
     }

@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let _ = acquirePrivileges()        
         let screenRect = NSScreen.main?.frame
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
+        window?.collectionBehavior = .moveToActiveSpace
         window?.backgroundColor = NSColor.clear
         window?.isOpaque = false
         window?.ignoresMouseEvents = false
