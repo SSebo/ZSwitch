@@ -37,7 +37,10 @@ class ViewController: NSViewController {
                 if self.backView != nil {
                     self.backView?.removeFromSuperview()
                 }
-                
+                for item in self._appItemViews {
+                    item.view.removeFromSuperview()
+                }
+
                 let backViewWidth = Double((screenRect?.width)!) - (2 * actualLeftRightMargin) + 20
                 let backView = BackView()
                 backView.frame = NSRect(x: actualLeftRightMargin - 20, y: (Double((screenRect?.height)!/2 - 60)), width: backViewWidth, height: 120.0)
@@ -46,11 +49,16 @@ class ViewController: NSViewController {
                 backView.layer?.backgroundColor = NSColor(red:0.20, green:0.20, blue:0.20, alpha:1.00).cgColor
                 self.view.addSubview(backView)
                 
-                for item in self._appItemViews {
-                    item.view.removeFromSuperview()
-                }
                 self._appItemViews = newValue
-                for item in self._appItemViews {
+                for (index,item) in self.appItemViews.enumerated() {
+                    if index == self.currentAppIndex {
+                        let activeSign = NSView()
+                        activeSign.wantsLayer = true
+                        activeSign.frame = NSRect(x: 40, y:96, width: 6, height: 6)
+                        activeSign.layer?.cornerRadius = 3
+                        activeSign.layer?.backgroundColor = NSColor(red:0.16, green:0.97, blue:0.18, alpha:1.00).cgColor
+                        item.view.addSubview(activeSign)
+                    }
                     self.view.addSubview(item.view)
                 }
             }
@@ -95,7 +103,7 @@ class ViewController: NSViewController {
             appItem.appModel = appModel
             appItem.afterSelectApp = afterSelectApp
             
-            appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:100)
+            appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:114)
             appItemViews.append(appItem)
         }
         self.appItemViews = appItemViews
@@ -158,6 +166,7 @@ class ViewController: NSViewController {
                 currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
             }
         }
+        updateAppItemViews()
         if isShowingUI {
             return false
         }
