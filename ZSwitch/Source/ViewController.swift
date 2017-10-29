@@ -21,6 +21,9 @@ let ModifiersChange = 12
 class ViewController: NSViewController {
 
     var isCommandPressing = false
+    var isShiftPressing = false
+    var isShowingUI = false
+    var currentAppIndex = 0
     var timer = Timer()
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
@@ -46,7 +49,17 @@ class ViewController: NSViewController {
             return _appModels
         }
         set {
-            _appModels = newValue
+            for app in newValue { // app add
+                if _appModels.first(where: {$0.name == app.name}) == nil {
+                    _appModels.append(app)
+                }
+            }
+//            for (index, app) in _appModels.enumerated() { // app quit
+//                if newValue.first(where: {$0.name == app.name}) == nil {
+//                    _appModels.remove(at: index)
+//                }
+//            }
+
             if _appModels.count > 0 {
                 let totalUsedWidth = (Double(_appModels.count) - 1) * gapWidth + Double(_appModels.count) * itemExpectWidth
                 if totalUsedWidth <= Double((screenRect?.width)!) + 2 * (leftRightMinMargin) {
@@ -58,17 +71,22 @@ class ViewController: NSViewController {
                 }
             }
             
-            var appItemViews:[AppItemView] = []
-            for (index, appModel) in _appModels.enumerated() {
-                appModel.width = itemActualWidth
-                let appItem = AppItemView()
-                appItem.appModel = appModel
-                
-                appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:100)
-                appItemViews.append(appItem)
-            }
-            self.appItemViews = appItemViews
+            updateAppItemViews()
         }
+    }
+    
+    func updateAppItemViews() {
+        var appItemViews:[AppItemView] = []
+        for (index, appModel) in _appModels.enumerated() {
+            appModel.width = itemActualWidth
+            let appItem = AppItemView()
+            appItem.appModel = appModel
+            appItem.afterSelectApp = afterSelectApp
+            
+            appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:100)
+            appItemViews.append(appItem)
+        }
+        self.appItemViews = appItemViews
     }
 
     override func loadView() {
@@ -98,17 +116,27 @@ class ViewController: NSViewController {
         NSLog("keycode: \(keycode) type: \(type)")
         if (UInt32(keycode) == Key.command.carbonKeyCode) {
             self.isCommandPressing = !self.isCommandPressing
-            NSLog("commmand status: \(self.isCommandPressing)")
         }
         
-        NSLog("is active \(NSApp.isActive)")
-        if !self.isCommandPressing {
-            NSLog("de activate ---")
+        if !isCommandPressing && isShowingUI{
             NSApp.windows[0].orderOut(nil)
-        } else if self.isCommandPressing && keycode == Key.tab.carbonKeyCode {
-            NSLog("try launch ui ---")
+            let v = appItemViews[currentAppIndex]
+            NSWorkspace.shared.launchApplication((v.appModel?.name!)!)
+            afterSelectApp(appName: nil)
+            
+        } else if isCommandPressing && keycode == Key.tab.carbonKeyCode {
             NSApp.windows[0].orderFrontRegardless()
+            isShowingUI = true
+            if (type == KeyDown && appItemViews.count > 0) {
+                currentAppIndex = (currentAppIndex + 1) % appItemViews.count
+            }
+        } else if isCommandPressing && keycode == Key.grave.carbonKeyCode {
+            if (type == KeyDown && appItemViews.count > 0) {
+                currentAppIndex = (currentAppIndex - 1) % appItemViews.count
+            }
         }
+        
+        NSLog("\(self.currentAppIndex)")
     }
     
     override func viewWillAppear() {
@@ -116,8 +144,22 @@ class ViewController: NSViewController {
     }
 
     override func mouseDown(with theEvent: NSEvent) {
-        NSLog("mouseDown on backGround View")
         NSApp.windows[0].orderOut(nil)
+    }
+    
+    @objc func afterSelectApp(appName: String?) {
+        if let name = appName {
+            for (index, app) in appModels.enumerated() {
+                if app.name == name {
+                    self.currentAppIndex = index
+                }
+            }
+        }
+        
+        _appModels.rearrange(from: currentAppIndex, to: 0)
+        updateAppItemViews()
+        currentAppIndex = 0
+        isShowingUI = false
     }
 
     override var representedObject: Any? {
@@ -126,5 +168,11 @@ class ViewController: NSViewController {
         }
     }
 
+}
+
+extension Array {
+    mutating func rearrange(from: Int, to: Int) {
+        insert(remove(at: from), at: to)
+    }
 }
 

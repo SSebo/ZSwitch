@@ -13,11 +13,13 @@ class AppItemView: NSViewController {
     @IBOutlet weak var label: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
     var appModel: AppModel?
+    var afterSelectApp: ((String?) -> Void)?
 
     override func mouseDown(with theEvent: NSEvent) {
         NSLog("mouseDown on \(self.label.stringValue)")
         NSWorkspace.shared.launchApplication(self.label.stringValue)
         NSApp.windows[0].orderOut(nil)
+        self.afterSelectApp?(self.label.stringValue)
     }
     
     override func viewDidLoad() {
@@ -35,8 +37,7 @@ class AppItemView: NSViewController {
             imageView?.image = nil
             label?.stringValue = ""
         }
-        
     }
-    
 }
+
 
