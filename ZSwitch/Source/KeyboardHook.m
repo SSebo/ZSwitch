@@ -23,11 +23,12 @@ struct keyEvent {
 
 //typedef void (^keyEventCallback)(int, int);
 
-static void (^callback)(int, int);
+static bool (^callback)(int, int);
 
-CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
-    int64_t keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type,
+                             CGEventRef event, void *refcon) {
     
+    int64_t keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
 //    if (type == kCGEventKeyUp) {
 //        NSLog(@"key up %lld", keycode);
 //    } else if (type == kCGEventKeyDown) {
@@ -36,30 +37,33 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
 //        NSLog(@"flag change %lld", keycode);
 //    }
     
-//    [[NSNotificationCenter defaultCenter] postNotificationName: @"keychange"
-//                                                        object: [NSString stringWithFormat:@"%lld %u", keycode, type]];
-    callback((int)keycode, (int)type);
-    if (keycode == 55) { // intercept macOS default behavior
-        isCommandPressed = !isCommandPressed;
-        NSLog(@"command pressed: %hhd", isCommandPressed);
+    if (callback((int)keycode, (int)type)) {
+        return event;
     }
-    
-    // 48 is tab, 12 is q
-    if (keycode == 48 && isCommandPressed) {
-        return nil;
-    }
-    if (keycode == 12 && isCommandPressed && NSApp.active) {
-        return nil;
-    }
-    
-    return event;
+    return nil;
+//    if (keycode == 55) { // intercept macOS default behavior
+//        isCommandPressed = !isCommandPressed;
+//    }
+//
+//    // 48 is tab, 12 is q
+//    if (keycode == 48 && isCommandPressed) {
+//        return nil;
+//    }
+//    if (keycode == 12 && isCommandPressed && NSApp.active) {
+//        return nil;
+//    }
+//    return event;
 }
 
-+ (void) start: (void(^)(int, int)) block {
++ (void) start: (bool(^)(int, int)) block {
     callback = block;
     CFRunLoopSourceRef runLoopSource;
-    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp) | CGEventMaskBit(kCGEventFlagsChanged);
-    CFMachPortRef eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault,                                                                                         mask, myCGEventCallback, NULL);
+    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown)|
+                       CGEventMaskBit(kCGEventKeyUp) |
+                       CGEventMaskBit(kCGEventFlagsChanged);
+    CFMachPortRef eventTap = CGEventTapCreate(kCGHIDEventTap,kCGHeadInsertEventTap,
+                                              kCGEventTapOptionDefault, mask,
+                                              myCGEventCallback, NULL);
     
     if (!eventTap) {
         NSLog(@"Couldn't create event tap!");
