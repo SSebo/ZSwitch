@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1D038DC9EAC1926540C38C /* Pods_ZSwitchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13595686D913ADA68AEFE6D5 /* Pods_ZSwitchTests.framework */; };
+		5C0E63EE93158F3A368E4CA6 /* Pods_ZSwitchUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10C2AA93E2BEA8A8797291A /* Pods_ZSwitchUITests.framework */; };
+		60AFB797FF8A711537115A1F /* Pods_ZSwitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */; };
 		7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B1781FA2F9080070E220 /* KeyboardHook.m */; };
 		7A34B17D1FA3022A0070E220 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B17C1FA3022A0070E220 /* Key.swift */; };
 		7AABCFFB1F9DC0AE0038DF50 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */; };
@@ -38,10 +41,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSwitch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13595686D913ADA68AEFE6D5 /* Pods_ZSwitchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSwitchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		428F1F83AD7F2FD90985312E /* Pods-ZSwitch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitch.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch.release.xcconfig"; sourceTree = "<group>"; };
+		585F693B89EEEC9615966611 /* Pods-ZSwitchUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitchUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests.release.xcconfig"; sourceTree = "<group>"; };
+		769F12617ED915DDF5DFA1BE /* Pods-ZSwitchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitchTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests.release.xcconfig"; sourceTree = "<group>"; };
 		7A34B1761FA2F9080070E220 /* ZSwitch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZSwitch-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A34B1771FA2F9080070E220 /* KeyboardHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardHook.h; sourceTree = "<group>"; };
 		7A34B1781FA2F9080070E220 /* KeyboardHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardHook.m; sourceTree = "<group>"; };
 		7A34B17C1FA3022A0070E220 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		7A3BDCA55EFE0822C2BE7A37 /* Pods-ZSwitch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch.debug.xcconfig"; sourceTree = "<group>"; };
 		7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		7ABCB0E61FA08A0C00E09570 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		7ABCB0EB1FA08AC900E09570 /* ZSwitchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZSwitchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +67,9 @@
 		7ACC53531F45A9DB0058755F /* AppItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppItemView.swift; sourceTree = "<group>"; };
 		7ACC53541F45A9DB0058755F /* AppItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppItemView.xib; sourceTree = "<group>"; };
 		7ACC53551F45A9DB0058755F /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		927BF31ABF8ECA66F527683E /* Pods-ZSwitchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitchTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B10C2AA93E2BEA8A8797291A /* Pods_ZSwitchUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSwitchUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9A444DBB8A6C9453D03185F /* Pods-ZSwitchUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitchUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C0E63EE93158F3A368E4CA6 /* Pods_ZSwitchUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B1D038DC9EAC1926540C38C /* Pods_ZSwitchTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60AFB797FF8A711537115A1F /* Pods_ZSwitch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				7ABCB0E61FA08A0C00E09570 /* XCTest.framework */,
+				0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */,
+				13595686D913ADA68AEFE6D5 /* Pods_ZSwitchTests.framework */,
+				B10C2AA93E2BEA8A8797291A /* Pods_ZSwitchUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -136,6 +154,7 @@
 				7ABCB0FA1FA08AFA00E09570 /* ZSwitchTests */,
 				7ACC53411F45A9560058755F /* Products */,
 				7ABCB0E51FA08A0C00E09570 /* Frameworks */,
+				ADF4AAF1C84830AFC28347A6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,6 +178,19 @@
 			path = ZSwitch;
 			sourceTree = "<group>";
 		};
+		ADF4AAF1C84830AFC28347A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7A3BDCA55EFE0822C2BE7A37 /* Pods-ZSwitch.debug.xcconfig */,
+				428F1F83AD7F2FD90985312E /* Pods-ZSwitch.release.xcconfig */,
+				927BF31ABF8ECA66F527683E /* Pods-ZSwitchTests.debug.xcconfig */,
+				769F12617ED915DDF5DFA1BE /* Pods-ZSwitchTests.release.xcconfig */,
+				F9A444DBB8A6C9453D03185F /* Pods-ZSwitchUITests.debug.xcconfig */,
+				585F693B89EEEC9615966611 /* Pods-ZSwitchUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,9 +198,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7ABCB0F21FA08AC900E09570 /* Build configuration list for PBXNativeTarget "ZSwitchUITests" */;
 			buildPhases = (
+				C4C3567DCA29907247700C95 /* [CP] Check Pods Manifest.lock */,
 				7ABCB0E71FA08AC900E09570 /* Sources */,
 				7ABCB0E81FA08AC900E09570 /* Frameworks */,
 				7ABCB0E91FA08AC900E09570 /* Resources */,
+				03071E0C7805EAF48440AE33 /* [CP] Embed Pods Frameworks */,
+				F79D09E390E75F472419F217 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -184,9 +219,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7ABCB1001FA08AFA00E09570 /* Build configuration list for PBXNativeTarget "ZSwitchTests" */;
 			buildPhases = (
+				BCB444BD53C787F085498452 /* [CP] Check Pods Manifest.lock */,
 				7ABCB0F51FA08AF900E09570 /* Sources */,
 				7ABCB0F61FA08AF900E09570 /* Frameworks */,
 				7ABCB0F71FA08AF900E09570 /* Resources */,
+				7A9C70C09F2124F8681181BD /* [CP] Embed Pods Frameworks */,
+				56172E59AEE345B1F52146A4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -202,9 +240,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7ACC534F1F45A9560058755F /* Build configuration list for PBXNativeTarget "ZSwitch" */;
 			buildPhases = (
+				60AE5297B86943D762CB2D39 /* [CP] Check Pods Manifest.lock */,
 				7ACC533C1F45A9560058755F /* Sources */,
 				7ACC533D1F45A9560058755F /* Frameworks */,
 				7ACC533E1F45A9560058755F /* Resources */,
+				5509A3D752F80EFE9E3D1F65 /* [CP] Embed Pods Frameworks */,
+				3211C8F10F8F105811E56EFC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -289,6 +330,144 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		03071E0C7805EAF48440AE33 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3211C8F10F8F105811E56EFC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5509A3D752F80EFE9E3D1F65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56172E59AEE345B1F52146A4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		60AE5297B86943D762CB2D39 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7A9C70C09F2124F8681181BD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BCB444BD53C787F085498452 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C4C3567DCA29907247700C95 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F79D09E390E75F472419F217 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7ABCB0E71FA08AC900E09570 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -337,6 +516,7 @@
 /* Begin XCBuildConfiguration section */
 		7ABCB0F31FA08AC900E09570 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9A444DBB8A6C9453D03185F /* Pods-ZSwitchUITests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -355,6 +535,7 @@
 		};
 		7ABCB0F41FA08AC900E09570 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 585F693B89EEEC9615966611 /* Pods-ZSwitchUITests.release.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -373,6 +554,7 @@
 		};
 		7ABCB1011FA08AFA00E09570 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 927BF31ABF8ECA66F527683E /* Pods-ZSwitchTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -392,6 +574,7 @@
 		};
 		7ABCB1021FA08AFA00E09570 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 769F12617ED915DDF5DFA1BE /* Pods-ZSwitchTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -515,6 +698,7 @@
 		};
 		7ACC53501F45A9560058755F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A3BDCA55EFE0822C2BE7A37 /* Pods-ZSwitch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -532,6 +716,7 @@
 		};
 		7ACC53511F45A9560058755F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 428F1F83AD7F2FD90985312E /* Pods-ZSwitch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

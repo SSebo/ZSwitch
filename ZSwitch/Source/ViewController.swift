@@ -22,7 +22,7 @@ class ViewController: NSViewController {
 
     var isCommandPressing = false
     var isShiftPressing = false
-    var isShowingUI = false
+    var isShowingUI = true
     var currentAppIndex = 0
     var backView: BackView?
     var timer = Timer()
@@ -47,14 +47,15 @@ class ViewController: NSViewController {
                 backView.wantsLayer = true
                 backView.layer?.cornerRadius = 20
                 backView.layer?.backgroundColor = NSColor(red:0.20, green:0.20, blue:0.20, alpha:1.00).cgColor
-                self.view.addSubview(backView)
+                self.backView = backView
+                self.view.addSubview(self.backView!)
                 
                 self._appItemViews = newValue
                 for (index,item) in self.appItemViews.enumerated() {
                     if index == self.currentAppIndex {
                         let activeSign = NSView()
                         activeSign.wantsLayer = true
-                        activeSign.frame = NSRect(x: 40, y:96, width: 6, height: 6)
+                        activeSign.frame = NSRect(x: 38, y:96, width: 6, height: 6)
                         activeSign.layer?.cornerRadius = 3
                         activeSign.layer?.backgroundColor = NSColor(red:0.16, green:0.97, blue:0.18, alpha:1.00).cgColor
                         item.view.addSubview(activeSign)
@@ -85,6 +86,9 @@ class ViewController: NSViewController {
                 let totalUsedWidth = (Double(_appModels.count) - 1) * gapWidth + Double(_appModels.count) * itemExpectWidth
                 if totalUsedWidth <= Double((screenRect?.width)!) + 2 * (leftRightMinMargin) {
                     actualLeftRightMargin = (Double((screenRect?.width)!) - totalUsedWidth) / 2.0
+                    if actualLeftRightMargin < leftRightMinMargin {
+                        actualLeftRightMargin = leftRightMinMargin
+                    }
                 } else {
                     actualLeftRightMargin = leftRightMinMargin
                     let totalGapWidth = (Double(_appModels.count) - 1) * gapWidth
@@ -93,6 +97,20 @@ class ViewController: NSViewController {
             }
             updateAppItemViews()
         }
+    }
+    
+    override func loadView() {
+        let view = NSView(frame: screenRect!)
+        view.wantsLayer = true
+        self.view = view
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { (_)  in
+            self.updateAppModels()
+        })
+        
     }
     
     func updateAppItemViews() {
@@ -109,28 +127,16 @@ class ViewController: NSViewController {
         self.appItemViews = appItemViews
     }
 
-    override func loadView() {
-        let view = NSView(frame: screenRect!)
-        view.wantsLayer = true
-        self.view = view
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        KeyboardHook.start(interceptKeyChange)
-        updateAppModels()
-        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { (_)  in
-            self.updateAppModels()
-        })
-        
-    }
     
     func updateAppModels() {
+        if !isShowingUI {
+            return
+        }
         let ws = NSWorkspace.shared
         var tmpModels:[AppModel] = []
         for app in ws.runningApplications {
             if (app.activationPolicy == .regular) {
-                let appModel = AppModel(icon: app.icon, name: app.localizedName, pid: app.processIdentifier)
+                let appModel = AppModel(app: app)
                 tmpModels.append(appModel)
             }
         }
@@ -138,13 +144,15 @@ class ViewController: NSViewController {
     }
     
     @objc func interceptKeyChange(_ keycode: Int32, _ type: Int32) -> Bool {
-        if appModels.count == 0 {
-            return true
-        }
+
 //        NSLog("current index: \(currentAppIndex)")
 //        NSLog("keycode: \(keycode) type: \(type)")
         if (UInt32(keycode) == Key.command.carbonKeyCode) {
             self.isCommandPressing = !self.isCommandPressing
+        }
+
+        if appModels.count == 0 {
+            return true
         }
         
         if !isCommandPressing && isShowingUI {
@@ -165,7 +173,16 @@ class ViewController: NSViewController {
             if (type == KeyDown && appItemViews.count > 0) {
                 currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
             }
+        } else if isShowingUI && isCommandPressing && keycode == Key.q.carbonKeyCode {
+            if (type == KeyDown && appItemViews.count > 0) {
+                let appModel = appModels[currentAppIndex]
+                let runingApp = NSWorkspace.shared.runningApplications.first(where: {$0.processIdentifier == appModel.pid})
+                runingApp?.forceTerminate()
+                appModels.remove(at: currentAppIndex)
+                currentAppIndex = currentAppIndex % appModels.count
+            }
         }
+        
         updateAppItemViews()
         if isShowingUI {
             return false

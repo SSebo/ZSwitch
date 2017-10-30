@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import FMDB
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -15,7 +16,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var controller: NSViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let _ = acquirePrivileges()        
+        let _ = acquirePrivileges()
+//        testDb()
         let screenRect = NSScreen.main?.frame
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.collectionBehavior = .moveToActiveSpace
@@ -23,6 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window?.isOpaque = false
         window?.ignoresMouseEvents = false
         controller = ViewController()
+        KeyboardHook.start((controller as! ViewController).interceptKeyChange)
         let content = window!.contentView! as NSView
         let view = controller!.view
         content.addSubview(view)
@@ -49,6 +52,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //            })
 //        }
         return accessEnabled == true
+    }
+    
+    func testDb() {
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("test.sqlite")
+        
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+        
+        do {
+            try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+            try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
+            try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
+            
+            let rs = try database.executeQuery("select x, y, z from test", values: nil)
+            while rs.next() {
+                if let x = rs.string(forColumn: "x"), let y = rs.string(forColumn: "y"), let z = rs.string(forColumn: "z") {
+                    print("x = \(x); y = \(y); z = \(z)")
+                }
+            }
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
     }
 
 }

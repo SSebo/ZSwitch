@@ -9,14 +9,16 @@
 import Cocoa
 
 class AppModel {
-    init(icon: NSImage?, name: String?, pid: pid_t?) {
-        self.icon = icon
-        self.name = name
-        self.pid = pid
+    init(app: NSRunningApplication?) {
+        self.app = app!
+        self.icon = app?.icon
+        self.name = app?.localizedName
+        self.pid = app?.processIdentifier
     }
 
     var icon: NSImage?
     var name: String?
     var width: Double?
     var pid: pid_t?
+    var app: NSRunningApplication
 }
