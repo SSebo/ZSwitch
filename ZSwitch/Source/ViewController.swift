@@ -158,10 +158,12 @@ class ViewController: NSViewController {
         if !isCommandPressing && isShowingUI {
             NSApp.windows[0].orderOut(nil)
             let v = appItemViews[currentAppIndex]
-            NSWorkspace.shared.launchApplication((v.appModel?.name!)!)
+            v.appModel?.app.activate(options: .activateIgnoringOtherApps)
             afterSelectApp(appName: nil)
             
         } else if isCommandPressing && keycode == Key.tab.carbonKeyCode {
+            // TODO: current active app, if not in first order, should replace to first
+            
             NSApp.windows[0].orderFrontRegardless()
             isShowingUI = true
             if (type == KeyDown && appItemViews.count > 0) {

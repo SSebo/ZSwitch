@@ -12,6 +12,9 @@
 		60AFB797FF8A711537115A1F /* Pods_ZSwitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */; };
 		7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B1781FA2F9080070E220 /* KeyboardHook.m */; };
 		7A34B17D1FA3022A0070E220 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B17C1FA3022A0070E220 /* Key.swift */; };
+		7A91D6BB1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BA1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift */; };
+		7A91D6BD1FA81CD200A143F8 /* LCS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BC1FA81CD200A143F8 /* LCS.swift */; };
+		7A91D6BE1FA81CD200A143F8 /* LCS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BC1FA81CD200A143F8 /* LCS.swift */; };
 		7AABCFFB1F9DC0AE0038DF50 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */; };
 		7ABCB0EE1FA08AC900E09570 /* ZSwitchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB0ED1FA08AC900E09570 /* ZSwitchUITests.swift */; };
 		7ABCB0FC1FA08AFA00E09570 /* ZSwitchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCB0FB1FA08AFA00E09570 /* ZSwitchTests.swift */; };
@@ -51,6 +54,8 @@
 		7A34B1781FA2F9080070E220 /* KeyboardHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardHook.m; sourceTree = "<group>"; };
 		7A34B17C1FA3022A0070E220 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		7A3BDCA55EFE0822C2BE7A37 /* Pods-ZSwitch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch.debug.xcconfig"; sourceTree = "<group>"; };
+		7A91D6BA1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongestCommonSubsequenceTests.swift; sourceTree = "<group>"; };
+		7A91D6BC1FA81CD200A143F8 /* LCS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCS.swift; sourceTree = "<group>"; };
 		7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		7ABCB0E61FA08A0C00E09570 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		7ABCB0EB1FA08AC900E09570 /* ZSwitchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZSwitchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,12 +105,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7ABCB0CB1FA0857700E09570 /* Source */ = {
+		7A91D6BF1FA8215F00A143F8 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7A91D6BC1FA81CD200A143F8 /* LCS.swift */,
 				7A34B17C1FA3022A0070E220 /* Key.swift */,
 				7A34B1771FA2F9080070E220 /* KeyboardHook.h */,
 				7A34B1781FA2F9080070E220 /* KeyboardHook.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7ABCB0CB1FA0857700E09570 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7A91D6BF1FA8215F00A143F8 /* Utils */,
 				7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */,
 				7ACC53531F45A9DB0058755F /* AppItemView.swift */,
 				7ACC53541F45A9DB0058755F /* AppItemView.xib */,
@@ -140,6 +154,7 @@
 		7ABCB0FA1FA08AFA00E09570 /* ZSwitchTests */ = {
 			isa = PBXGroup;
 			children = (
+				7A91D6BA1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift */,
 				7ABCB0FB1FA08AFA00E09570 /* ZSwitchTests.swift */,
 				7ABCB0FD1FA08AFA00E09570 /* Info.plist */,
 			);
@@ -482,6 +497,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ABCB0FC1FA08AFA00E09570 /* ZSwitchTests.swift in Sources */,
+				7A91D6BE1FA81CD200A143F8 /* LCS.swift in Sources */,
+				7A91D6BB1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +511,7 @@
 				7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */,
 				7ACC535B1F45A9DB0058755F /* AppModel.swift in Sources */,
 				7ACC53591F45A9DB0058755F /* AppItemView.swift in Sources */,
+				7A91D6BD1FA81CD200A143F8 /* LCS.swift in Sources */,
 				7A34B17D1FA3022A0070E220 /* Key.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,7 +727,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ZSwitch/Source/ZSwitch-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -726,7 +744,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.boz88.ZSwitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ZSwitch/Source/ZSwitch-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

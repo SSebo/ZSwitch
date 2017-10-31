@@ -17,6 +17,7 @@ class AppItemView: NSViewController {
 
     override func mouseDown(with theEvent: NSEvent) {
         NSLog("mouseDown on \(self.label.stringValue)")
+        appModel?.app.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication(self.label.stringValue)
         NSApp.windows[0].orderOut(nil)
         self.afterSelectApp?(self.label.stringValue)

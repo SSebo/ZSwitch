@@ -16,14 +16,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var controller: NSViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let _ = acquirePrivileges()
-//        testDb()
-        let screenRect = NSScreen.main?.frame
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.collectionBehavior = .moveToActiveSpace
         window?.backgroundColor = NSColor.clear
         window?.isOpaque = false
         window?.ignoresMouseEvents = false
+        
+        acquirePrivilegesAndStart()
+//        testDb()
+    }
+
+    func applicationWillTerminate(_ aNotification: Notification) {
+        // Insert code here to tear down your application
+    }
+    
+    func startup() {
         controller = ViewController()
         KeyboardHook.start((controller as! ViewController).interceptKeyChange)
         let content = window!.contentView! as NSView
@@ -31,27 +38,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         content.addSubview(view)
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
-    }
-
-    func acquirePrivileges() -> Bool {
+    func acquirePrivilegesAndStart() -> Void {
         let trusted = kAXTrustedCheckOptionPrompt.takeUnretainedValue()
         let privOptions = [trusted: true] as CFDictionary
         let accessEnabled = AXIsProcessTrustedWithOptions(privOptions)
-//        if accessEnabled != true {
-//            let alert = NSAlert()
-//            alert.messageText = "Enable SmartSwitcher"
-//            alert.informativeText = "Once you have enabled SmartSwitcher in System Preferences, click OK."
-//            alert.beginSheetModal(for: self.window!, completionHandler: { response in
-//                if AXIsProcessTrustedWithOptions(privOptions) == true {
-////                    self.startup()
-//                } else {
-//                    NSApp.terminate(self)
-//                }
-//            })
-//        }
-        return accessEnabled == true
+        if accessEnabled != true {
+            let alert = NSAlert()
+            alert.messageText = "Enable ZSwitch"
+            alert.informativeText = """
+            
+            Open System Preferences > Security & Privicy > Accessibility (left panel) > Drag ZSwitch to right panel and checked,
+            
+            then restart app.
+            """
+            alert.beginSheetModal(for: self.window!, completionHandler: { response in
+                if AXIsProcessTrustedWithOptions(privOptions) == true {
+                    self.startup()
+                } else {
+                    NSApp.terminate(self)
+                }
+            })
+        } else {
+            self.startup()
+        }
     }
     
     func testDb() {
