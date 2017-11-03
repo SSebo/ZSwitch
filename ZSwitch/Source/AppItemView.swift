@@ -21,12 +21,11 @@ class AppItemView: NSViewController {
             return _isActive
         }
         set {
-            if _isActive == newValue {
-                return
-            }
+            if _isActive == newValue { return }
+            
             _isActive = newValue
             if _isActive {
-                label?.stringValue = (appModel?.name)!
+                label?.textColor = NSColor(red:0.92, green:0.93, blue:0.94, alpha:1.00)
             }
         }
     }
@@ -35,14 +34,13 @@ class AppItemView: NSViewController {
             return _size
         }
         set {
-            if _size == newValue {
-                return
-            }
+            if _size == newValue { return }
+            
             _size = newValue
             self.view.frame = NSRect(x:0, y: 0, width: _size, height: _size + 30)
             self.imageView.setFrameSize(NSSize(width: _size, height: _size))
             self.imageView.imageScaling = .scaleAxesIndependently
-            self.label.setFrameSize(NSSize(width: _size, height: 20))
+            self.label.frame = NSRect(x: 0, y: Int(self.imageView.frame.minY - 20) , width: _size, height: 20)
         }
     }
 
@@ -55,12 +53,10 @@ class AppItemView: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         if let appModel = appModel {
             imageView?.image = appModel.icon
             imageView?.imageScaling = .scaleAxesIndependently
-            label?.stringValue = ""
-//            label.wantsLayer = true
+            label?.stringValue = appModel.name!
         }
     }
 }

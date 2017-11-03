@@ -20,9 +20,19 @@ class ZSwitchTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testReorderAppByDistance() {
+        let appModels = ["app1", "app2", "app3"]
+        let newModels = appModels.sorted { (a, b) -> Bool in
+            a.lcsDistance("2") < b.lcsDistance("2")
+        }
+        for (index, app) in appModels.enumerated() {
+             XCTAssertEqual(app, appModels[index])
+        }
+        
+        XCTAssertEqual("app2", newModels[0])
+        XCTAssertEqual("app1", newModels[1])
+        XCTAssertEqual("app3", newModels[2])
+
     }
     
     func testPerformanceExample() {

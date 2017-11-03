@@ -13,4 +13,5 @@ typedef void (^keyEventCallback)(int, int);
 @interface KeyboardHook : NSObject
 
 + (void) start: (bool(^)(int, int)) block;
+
 @end

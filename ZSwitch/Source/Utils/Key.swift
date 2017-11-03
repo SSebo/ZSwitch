@@ -478,4 +478,89 @@ public enum Key {
 		case .upArrow: return UInt32(kVK_UpArrow)
 		}
 	}
+    
+    public static func isAlphabetKey(code: UInt32) -> Bool {
+        switch code {
+        case UInt32(kVK_ANSI_A),
+            UInt32(kVK_ANSI_S),
+            UInt32(kVK_ANSI_D),
+            UInt32(kVK_ANSI_F),
+            UInt32(kVK_ANSI_H),
+            UInt32(kVK_ANSI_G),
+            UInt32(kVK_ANSI_Z),
+            UInt32(kVK_ANSI_X),
+            UInt32(kVK_ANSI_C),
+            UInt32(kVK_ANSI_V),
+            UInt32(kVK_ANSI_B),
+            UInt32(kVK_ANSI_Q),
+            UInt32(kVK_ANSI_W),
+            UInt32(kVK_ANSI_E),
+            UInt32(kVK_ANSI_R),
+            UInt32(kVK_ANSI_Y),
+            UInt32(kVK_ANSI_T),
+            UInt32(kVK_ANSI_1),
+            UInt32(kVK_ANSI_2),
+            UInt32(kVK_ANSI_3),
+            UInt32(kVK_ANSI_4),
+            UInt32(kVK_ANSI_6),
+            UInt32(kVK_ANSI_5),
+            UInt32(kVK_ANSI_9),
+            UInt32(kVK_ANSI_7),
+            UInt32(kVK_ANSI_8),
+            UInt32(kVK_ANSI_0),
+            UInt32(kVK_ANSI_O),
+            UInt32(kVK_ANSI_U),
+            UInt32(kVK_ANSI_I),
+            UInt32(kVK_ANSI_P),
+            UInt32(kVK_ANSI_L),
+            UInt32(kVK_ANSI_J),
+            UInt32(kVK_ANSI_K),
+            UInt32(kVK_ANSI_N),
+            UInt32(kVK_ANSI_M): return true
+            default: return false
+        }
+    }
+    
+    public static func toAlphabelt(keycode:UInt32) -> String {
+        switch keycode {
+        case UInt32(kVK_ANSI_A): return "a"
+        case UInt32(kVK_ANSI_S): return "s"
+        case UInt32(kVK_ANSI_D): return "d"
+        case UInt32(kVK_ANSI_F): return "f"
+        case UInt32(kVK_ANSI_H): return "h"
+        case UInt32(kVK_ANSI_G): return "g"
+        case UInt32(kVK_ANSI_Z): return "z"
+        case UInt32(kVK_ANSI_X): return "x"
+        case UInt32(kVK_ANSI_C): return "c"
+        case UInt32(kVK_ANSI_V): return "v"
+        case UInt32(kVK_ANSI_B): return "b"
+        case UInt32(kVK_ANSI_Q): return "q"
+        case UInt32(kVK_ANSI_W): return "w"
+        case UInt32(kVK_ANSI_E): return "e"
+        case UInt32(kVK_ANSI_R): return "r"
+        case UInt32(kVK_ANSI_Y): return "y"
+        case UInt32(kVK_ANSI_T): return "t"
+        case UInt32(kVK_ANSI_1): return "1"
+        case UInt32(kVK_ANSI_2): return "2"
+        case UInt32(kVK_ANSI_3): return "3"
+        case UInt32(kVK_ANSI_4): return "4"
+        case UInt32(kVK_ANSI_6): return "6"
+        case UInt32(kVK_ANSI_5): return "5"
+        case UInt32(kVK_ANSI_9): return "9"
+        case UInt32(kVK_ANSI_7): return "7"
+        case UInt32(kVK_ANSI_8): return "8"
+        case UInt32(kVK_ANSI_0): return "0"
+        case UInt32(kVK_ANSI_O): return "o"
+        case UInt32(kVK_ANSI_U): return "u"
+        case UInt32(kVK_ANSI_I): return "i"
+        case UInt32(kVK_ANSI_P): return "p"
+        case UInt32(kVK_ANSI_L): return "l"
+        case UInt32(kVK_ANSI_J): return "j"
+        case UInt32(kVK_ANSI_K): return "k"
+        case UInt32(kVK_ANSI_N): return "n"
+        case UInt32(kVK_ANSI_M): return "m"
+        default:
+            return ""
+        }
+    }
 }

@@ -21,38 +21,18 @@ struct keyEvent {
     CGEventType type;
 } KeyEvent;
 
-//typedef void (^keyEventCallback)(int, int);
-
 static bool (^callback)(int, int);
 
 CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type,
                              CGEventRef event, void *refcon) {
     
     int64_t keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
-//    if (type == kCGEventKeyUp) {
-//        NSLog(@"key up %lld", keycode);
-//    } else if (type == kCGEventKeyDown) {
-//        NSLog(@"key down %lld", keycode);
-//    } else if (type == kCGEventFlagsChanged){
-//        NSLog(@"flag change %lld", keycode);
-//    }
     
     if (callback((int)keycode, (int)type)) {
         return event;
     }
     return nil;
-//    if (keycode == 55) { // intercept macOS default behavior
-//        isCommandPressed = !isCommandPressed;
-//    }
-//
-//    // 48 is tab, 12 is q
-//    if (keycode == 48 && isCommandPressed) {
-//        return nil;
-//    }
-//    if (keycode == 12 && isCommandPressed && NSApp.active) {
-//        return nil;
-//    }
-//    return event;
+
 }
 
 + (void) start: (bool(^)(int, int)) block {
