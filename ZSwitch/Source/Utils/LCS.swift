@@ -33,10 +33,10 @@ extension String {
             
             // Create matrix of size (n+1)x(m+1). The algorithm needs first row and
             // first column to be filled with 0.
-            var matrix = [[Int]](repeating: [Int](repeating: 0, count: other.characters.count+1), count: self.characters.count+1)
+            var matrix = [[Int]](repeating: [Int](repeating: 0, count: other.count+1), count: self.count+1)
             
-            for (i, selfChar) in self.characters.enumerated() {
-                for (j, otherChar) in other.characters.enumerated() {
+            for (i, selfChar) in self.enumerated() {
+                for (j, otherChar) in other.enumerated() {
                     if otherChar == selfChar {
                         // Common char found, add 1 to highest lcs found so far.
                         matrix[i+1][j+1] = matrix[i][j] + 1
@@ -54,8 +54,8 @@ extension String {
         // Backtracks from matrix[n][m] to matrix[1][1] looking for chars that are
         // common to both strings.
         func backtrack(_ matrix: [[Int]]) -> String {
-            var i = self.characters.count
-            var j = other.characters.count
+            var i = self.count
+            var j = other.count
             
             // charInSequence is in sync with i so we can get self[i]
             var charInSequence = self.endIndex
@@ -86,7 +86,7 @@ extension String {
             
             // Due to backtrack, chars were added in reverse order: reverse it back.
             // Append and reverse is faster than inserting at index 0.
-            return String(lcs.characters.reversed())
+            return String(lcs.reversed())
         }
         
         // Combine dynamic programming approach with backtrack to find the lcs.

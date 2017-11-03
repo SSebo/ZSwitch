@@ -14,29 +14,53 @@ class AppItemView: NSViewController {
     @IBOutlet weak var imageView: NSImageView!
     var appModel: AppModel?
     var afterSelectApp: ((String?) -> Void)?
+    var _size = 100
+    var _isActive = false
+    var isActive: Bool {
+        get {
+            return _isActive
+        }
+        set {
+            if _isActive == newValue {
+                return
+            }
+            _isActive = newValue
+            if _isActive {
+                label?.stringValue = (appModel?.name)!
+            }
+        }
+    }
+    var size: Int {
+        get {
+            return _size
+        }
+        set {
+            if _size == newValue {
+                return
+            }
+            _size = newValue
+            self.view.frame = NSRect(x:0, y: 0, width: _size, height: _size + 30)
+            self.imageView.setFrameSize(NSSize(width: _size, height: _size))
+            self.imageView.imageScaling = .scaleAxesIndependently
+            self.label.setFrameSize(NSSize(width: _size, height: 20))
+        }
+    }
 
     override func mouseDown(with theEvent: NSEvent) {
-        NSLog("mouseDown on \(self.label.stringValue)")
         appModel?.app.activate(options: .activateIgnoringOtherApps)
-        NSWorkspace.shared.launchApplication(self.label.stringValue)
+        NSWorkspace.shared.launchApplication((self.appModel?.name)!)
         NSApp.windows[0].orderOut(nil)
-        self.afterSelectApp?(self.label.stringValue)
+        self.afterSelectApp?(self.appModel?.name)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.wantsLayer = true
-//        view.layer?.backgroundColor = NSColor.init(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0).cgColor
-        
+
         if let appModel = appModel {
             imageView?.image = appModel.icon
             imageView?.imageScaling = .scaleAxesIndependently
-            if let name = appModel.name {
-                label?.stringValue = name
-            }
-        } else {
-            imageView?.image = nil
             label?.stringValue = ""
+//            label.wantsLayer = true
         }
     }
 }

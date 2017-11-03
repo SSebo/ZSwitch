@@ -8,12 +8,12 @@
 
 import Cocoa
 
-var itemExpectWidth = 100.0
-var itemActualWidth = 100.0
+var itemExpectWidth = 80
+var itemActualSize = 80
 let screenRect = NSScreen.main?.frame
-let gapWidth = 4.0
-let leftRightMinMargin = 10.0
-var actualLeftRightMargin = 0.0
+let gapWidth = 4
+let leftRightMinMargin = 10
+var leftRightActualMargin = 10
 let KeyDown = 10
 let KeyUp = 11
 let ModifiersChange = 12
@@ -39,11 +39,12 @@ class ViewController: NSViewController {
                 }
                 for item in self._appItemViews {
                     item.view.removeFromSuperview()
+                    item.isActive = false
                 }
 
-                let backViewWidth = Double((screenRect?.width)!) - (2 * actualLeftRightMargin) + 20
+                let backViewWidth = Int((screenRect?.width)!) - (2 * leftRightActualMargin) + 30
                 let backView = BackView()
-                backView.frame = NSRect(x: actualLeftRightMargin - 20, y: (Double((screenRect?.height)!/2 - 60)), width: backViewWidth, height: 120.0)
+                backView.frame = NSRect(x: leftRightActualMargin - 20, y: Int((screenRect?.height)!/2 - 60), width: backViewWidth, height: 120)
                 backView.wantsLayer = true
                 backView.layer?.cornerRadius = 20
                 backView.layer?.backgroundColor = NSColor(red:0.20, green:0.20, blue:0.20, alpha:1.00).cgColor
@@ -53,9 +54,10 @@ class ViewController: NSViewController {
                 self._appItemViews = newValue
                 for (index,item) in self.appItemViews.enumerated() {
                     if index == self.currentAppIndex {
+                        item.isActive = true
                         let activeSign = NSView()
                         activeSign.wantsLayer = true
-                        activeSign.frame = NSRect(x: 38, y:96, width: 6, height: 6)
+                        activeSign.frame = NSRect(x: itemActualSize/2 - 3, y:itemActualSize + 22, width: 6, height: 6)
                         activeSign.layer?.cornerRadius = 3
                         activeSign.layer?.backgroundColor = NSColor(red:0.16, green:0.97, blue:0.18, alpha:1.00).cgColor
                         item.view.addSubview(activeSign)
@@ -83,16 +85,17 @@ class ViewController: NSViewController {
             }
 
             if _appModels.count > 0 {
-                let totalUsedWidth = (Double(_appModels.count) - 1) * gapWidth + Double(_appModels.count) * itemExpectWidth
-                if totalUsedWidth <= Double((screenRect?.width)!) + 2 * (leftRightMinMargin) {
-                    actualLeftRightMargin = (Double((screenRect?.width)!) - totalUsedWidth) / 2.0
-                    if actualLeftRightMargin < leftRightMinMargin {
-                        actualLeftRightMargin = leftRightMinMargin
+                let totalUsedWidth = (_appModels.count - 1) * gapWidth + _appModels.count * itemExpectWidth
+                if totalUsedWidth <= Int((screenRect?.width)!) + 2 * (leftRightMinMargin) {
+                    itemActualSize = itemExpectWidth
+                    leftRightActualMargin = (Int((screenRect?.width)!) - totalUsedWidth) / 2
+                    if leftRightActualMargin < leftRightMinMargin {
+                        leftRightActualMargin = leftRightMinMargin
                     }
                 } else {
-                    actualLeftRightMargin = leftRightMinMargin
-                    let totalGapWidth = (Double(_appModels.count) - 1) * gapWidth
-                    itemActualWidth = (Double((screenRect?.width)!) - totalGapWidth - 2 * leftRightMinMargin) / Double(_appModels.count)
+                    leftRightActualMargin = leftRightMinMargin
+                    let totalGapWidth = (appModels.count - 1) * gapWidth
+                    itemActualSize = (Int((screenRect?.width)!) - totalGapWidth - 2 * leftRightMinMargin) / _appModels.count
                 }
             }
             updateAppItemViews()
@@ -107,6 +110,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.updateAppModels()
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { (_)  in
             self.updateAppModels()
         })
@@ -116,12 +120,13 @@ class ViewController: NSViewController {
     func updateAppItemViews() {
         var appItemViews:[AppItemView] = []
         for (index, appModel) in _appModels.enumerated() {
-            appModel.width = itemActualWidth
             let appItem = AppItemView()
             appItem.appModel = appModel
             appItem.afterSelectApp = afterSelectApp
-            
-            appItem.view.frame = NSRect(x: Int(actualLeftRightMargin + Double(index) * (itemActualWidth + gapWidth)), y:Int((screenRect?.height)!/2-50), width: 80, height:114)
+            appItem.size = itemActualSize
+            let x = Int(leftRightActualMargin + index * (itemActualSize + gapWidth))
+            let y = Int((screenRect?.height)!)/2 -  2 * itemActualSize / 3
+            appItem.view.frame = NSRect(x: x, y:y , width: Int(itemActualSize), height:114)
             appItemViews.append(appItem)
         }
         self.appItemViews = appItemViews
@@ -151,7 +156,8 @@ class ViewController: NSViewController {
             self.isCommandPressing = !self.isCommandPressing
         }
 
-        if appModels.count == 0 {
+        if currentAppIndex >= appModels.count {
+            currentAppIndex = 0
             return true
         }
         

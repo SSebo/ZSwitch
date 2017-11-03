@@ -18,7 +18,6 @@ class AppModel {
 
     var icon: NSImage?
     var name: String?
-    var width: Double?
     var pid: pid_t?
     var app: NSRunningApplication
 }
