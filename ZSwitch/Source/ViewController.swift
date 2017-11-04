@@ -18,6 +18,7 @@ class ViewController: NSViewController {
     var keyQdownCount = 0
     var _userInput = ""
     var backView: BackView?
+    var circleCounter: JWGCircleCounter?
     var label: NSTextField?
     var timer = Timer()
     var orderedAppModels: [AppModel] = []
@@ -31,19 +32,26 @@ class ViewController: NSViewController {
             return _userInput
         }
         set {
+            _userInput = newValue
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
                 clearUserInputWork.cancel()
-                _userInput = newValue
                 orderedAppModels = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
-                clearUserInputWork = DispatchWorkItem { self._userInput = "" }
+                self.circleCounter = getSingletonCircleCounter(counter: self.circleCounter,
+                                                               left: (self.label?.stringValue.count)! * 4)
+                self.view.addSubview(self.circleCounter!)
+                self.circleCounter?.start(withSeconds: 1)
+                
+                clearUserInputWork = DispatchWorkItem {
+                    self._userInput = ""
+                    self.label?.removeFromSuperview()
+                    self.circleCounter?.removeFromSuperview()
+                }
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearUserInputWork)
-                reCalculateSize(count: orderedAppModels.count)
             }
-            _userInput = newValue
             currentAppIndex = 0
         }
     }
@@ -130,9 +138,6 @@ class ViewController: NSViewController {
         if self.backView != nil {
             self.backView?.removeFromSuperview()
         }
-        if self.label != nil {
-            self.label?.removeFromSuperview()
-        }
         for item in self._appItemViews {
             item.view.removeFromSuperview()
             item.isActive = false
@@ -185,8 +190,8 @@ class ViewController: NSViewController {
     @objc func interceptKeyChange(keycode: Int32, type: Int32) -> Bool {
 //        NSLog("current index: \(currentAppIndex)")
 //        NSLog("keycode: \(keycode) type: \(type)")
-        assert(currentAppIndex < appModels.count)
         updateModifierKeyState(keycode)
+        if (self.orderedAppModels.count <= 0) { return true }
 
         if isCommandPressing && keycode == Key.tab.carbonKeyCode {
             // TODO: current active app, if not in first order, should replace to first

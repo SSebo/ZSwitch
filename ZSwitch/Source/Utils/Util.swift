@@ -30,6 +30,24 @@ func createBackView() -> BackView {
     return backView
 }
 
+func getSingletonCircleCounter(counter: JWGCircleCounter?, left: Int) -> JWGCircleCounter {
+    let x = Int((screenRect?.width)!/2) - 16 - left
+    let y = Int((screenRect?.height)!/2 + 52)
+    let rect = NSRect(x:x, y:y, width: 10, height: 10)
+    var c:JWGCircleCounter? = counter
+    if (counter == nil) {
+        c = JWGCircleCounter.init(frame: rect)
+        c?.circleTimerWidth = 1.3
+        c?.circleBackgroundColor = NSColor.clear
+        c?.circleColor = NSColor(red:0.16, green:0.97, blue:0.18, alpha:1.00)
+    } else {
+        c?.setFrameOrigin(NSPoint(x: x, y: y))
+    }
+    c?.layer?.zPosition = 100
+    
+    return c!
+}
+
 func createActiveSign() -> NSView {
     let x = itemActualSize/2 - 3
     let y = itemActualSize + 22

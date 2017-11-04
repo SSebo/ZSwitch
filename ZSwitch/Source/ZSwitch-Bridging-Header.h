@@ -3,4 +3,5 @@
 //
 
 #import "KeyboardHook.h"
+#import "JWGCircleCounter.h"
 
