@@ -40,19 +40,14 @@ class ViewController: NSViewController {
                 orderedAppModels = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
-                self.circleCounter = getSingletonCircleCounter(
-                    counter: self.circleCounter, left: (self.label?.stringValue.count)! * 4)
-                self.view.addSubview(self.circleCounter!)
-                self.circleCounter?.start(withSeconds: 1)
-                
                 clearUserInputWork = DispatchWorkItem {
                     self._userInput = ""
                     self.label?.removeFromSuperview()
-                    self.circleCounter?.removeFromSuperview()
                 }
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearUserInputWork)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1,
+                                              execute: clearUserInputWork)
             }
-            currentAppIndex = 0
+            updateLable(stringValue: self._userInput)
         }
     }
     
@@ -64,10 +59,7 @@ class ViewController: NSViewController {
             DispatchQueue.main.async {
                 self.clearViews()
                 self.backView = createBackView()
-                self.label = getInputLabel(label: self.label)
-                self.label?.stringValue = self.userInput
                 self.view.addSubview(self.backView!)
-                self.view.addSubview(self.label!)
                 self._appItemViews = newValue
                 for (index,item) in self.appItemViews.enumerated() {
                     if index == self.currentAppIndex {
@@ -143,6 +135,12 @@ class ViewController: NSViewController {
         }
     }
     
+    fileprivate func updateLable(stringValue: String) {
+        self.label = getInputLabel(label: self.label)
+        self.label?.stringValue = stringValue
+        self.view.addSubview(self.label!)
+    }
+    
     fileprivate func updateAppItemViews() {
         var appItemViews:[AppItemView] = []
         for (index, appModel) in orderedAppModels.enumerated() {
@@ -156,6 +154,13 @@ class ViewController: NSViewController {
             appItemViews.append(appItem!)
         }
         self.appItemViews = appItemViews
+    }
+    
+    fileprivate func addCycleCounterView(withSeconds: Int, offset: Int) {
+        self.circleCounter = getSingletonCircleCounter(
+            counter: self.circleCounter, left: offset * 4)
+        self.view.addSubview(self.circleCounter!)
+        self.circleCounter?.start(withSeconds: withSeconds)
     }
     
     @objc func afterSelectApp(appName: String?) {
@@ -230,7 +235,10 @@ class ViewController: NSViewController {
                     userInput = String(userInput[..<index])
                 }
             } else if type == KeyUp && Key.isAlphabetKey(code: UInt32(keycode)) {
-                userInput += Key.toAlphabelt(keycode: UInt32(keycode))
+                if shouldInput() {
+                    userInput += Key.toAlphabelt(keycode: UInt32(keycode))
+                    addCycleCounterView(withSeconds: 1, offset: userInput.count)
+                }
             }
         }
         
@@ -251,23 +259,47 @@ class ViewController: NSViewController {
         }
     }
     
+    fileprivate func shouldInput() -> Bool {
+         if keyQdownCount > 2 {
+            keyQdownCount = 0
+            return false
+        }
+        keyQdownCount = 0
+        return true
+    }
+    
     fileprivate func processKeyQdown() {
         keyQdownCount += 1
+        
         clearKeyQCountWork.cancel()
-        clearKeyQCountWork = DispatchWorkItem { self.keyQdownCount = 0 }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearKeyQCountWork)
-        if keyQdownCount > 5 {
-            let name = orderedAppModels[currentAppIndex].name
-            self._userInput = "hold 'Com+Q' 2s to quit '\(name!)'"
+        clearKeyQCountWork = DispatchWorkItem {
+            self.keyQdownCount = 0
+            self.circleCounter?.removeFromSuperview()
+            self.updateLable(stringValue: "")
         }
-        if keyQdownCount < 20 { return }
-        keyQdownCount = 0
-        _userInput = ""
-        let pid = orderedAppModels[currentAppIndex].pid!
-        terminateApp(pid: pid)
-        orderedAppModels = orderedAppModels.filter{ $0.pid != pid }
-        appModels = appModels.filter{ $0.pid != pid}
-        currentAppIndex = currentAppIndex % appModels.count
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500), execute: clearKeyQCountWork)
+        
+        let name = orderedAppModels[currentAppIndex].name
+        let s = "hold 'Com+Q' 2s to quit '\(name!)'"
+        if keyQdownCount == 5 {
+            updateLable(stringValue: s)
+            addCycleCounterView(withSeconds: 2, offset: s.count)
+        }
+        
+        if keyQdownCount == 20 {
+            keyQdownCount = -20
+            self.circleCounter?.removeFromSuperview()
+            let pid = orderedAppModels[currentAppIndex].pid!
+            terminateApp(pid: pid)
+            orderedAppModels = orderedAppModels.filter{ $0.pid != pid }
+            appModels = appModels.filter{ $0.pid != pid}
+            
+            if currentAppIndex == appModels.count {
+                currentAppIndex = appModels.count - 1
+            } else {
+                currentAppIndex = currentAppIndex % appModels.count
+            }
+        }
     }
     
     override func mouseDown(with theEvent: NSEvent) {

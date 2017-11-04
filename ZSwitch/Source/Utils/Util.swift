@@ -25,6 +25,7 @@ func createBackView() -> BackView {
     let backView = BackView()
     backView.frame = frame
     backView.wantsLayer = true
+    backView.layer?.zPosition = -1
     backView.layer?.cornerRadius = 20
     backView.layer?.backgroundColor = NSColor(red:0.20, green:0.20, blue:0.20, alpha:1.00).cgColor
     return backView
@@ -90,6 +91,7 @@ func getInputLabel(label: NSTextField?) -> NSTextField {
     }
     let width = 400
     l.frame = NSRect(x: (Int((screenRect?.width)!) - width) / 2 , y: Int((screenRect?.height)!/2) + 50, width: width, height: 18)
+    l.layer?.zPosition = 100
 
     return l
 }
