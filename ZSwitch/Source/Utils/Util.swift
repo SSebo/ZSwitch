@@ -70,18 +70,24 @@ func createAppItem(appModel: AppModel, index: Int) -> AppItemView {
     return appItem
 }
 
-func createInputLabel() -> NSTextField {
-    let label = NSTextField()
+func getInputLabel(label: NSTextField?) -> NSTextField {
+    let l: NSTextField
+    if label != nil {
+        l = label!
+    } else {
+        l = NSTextField()
+        l.textColor = NSColor(red:0.85, green:0.85, blue:0.85, alpha:1.00)
+        l.isBezeled = false
+        l.drawsBackground = false
+        l.isEditable = false
+        l.isSelectable = false
+        l.alignment = .center
+        l.font = NSFont.boldSystemFont(ofSize: NSFont.systemFontSize(for: l.controlSize))
+    }
     let width = 400
-    label.frame = NSRect(x: (Int((screenRect?.width)!) - width) / 2 , y: Int((screenRect?.height)!/2) + 50, width: width, height: 18)
-    label.textColor = NSColor(red:0.85, green:0.85, blue:0.85, alpha:1.00)
-    label.isBezeled = false
-    label.drawsBackground = false
-    label.isEditable = false
-    label.isSelectable = false
-    label.alignment = .center
-    label.font = NSFont.boldSystemFont(ofSize: NSFont.systemFontSize(for: label.controlSize))
-    return label
+    l.frame = NSRect(x: (Int((screenRect?.width)!) - width) / 2 , y: Int((screenRect?.height)!/2) + 50, width: width, height: 18)
+
+    return l
 }
 
 func reCalculateSize(count: Int) {

@@ -40,8 +40,8 @@ class ViewController: NSViewController {
                 orderedAppModels = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
-                self.circleCounter = getSingletonCircleCounter(counter: self.circleCounter,
-                                                               left: (self.label?.stringValue.count)! * 4)
+                self.circleCounter = getSingletonCircleCounter(
+                    counter: self.circleCounter, left: (self.label?.stringValue.count)! * 4)
                 self.view.addSubview(self.circleCounter!)
                 self.circleCounter?.start(withSeconds: 1)
                 
@@ -64,7 +64,7 @@ class ViewController: NSViewController {
             DispatchQueue.main.async {
                 self.clearViews()
                 self.backView = createBackView()
-                self.label = createInputLabel()
+                self.label = getInputLabel(label: self.label)
                 self.label?.stringValue = self.userInput
                 self.view.addSubview(self.backView!)
                 self.view.addSubview(self.label!)
