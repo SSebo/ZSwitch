@@ -1,12 +1,20 @@
+import Foundation
+
 extension String {
     
     public func lcsDistance(_ other: String) -> Double {
         if (self.count == 0 && other.count == 0) {
             return 0
         }
-        
-        let selfLower = self.lowercased().trimmingCharacters(in: [" "])
-        let otherLower = other.lowercased().trimmingCharacters(in: [" "])
+
+        let otherLower = other.lowercased()
+        var selfLower:String
+        if self.isIncludeChinese() {
+            selfLower = self.transformToPinyin().lowercased()
+        } else {
+            selfLower = self.lowercased()
+        }
+
         var short = selfLower
         var long = otherLower
         if selfLower.count >= otherLower.count {
@@ -21,7 +29,45 @@ extension String {
             similarity += 1
         }
         
-        return 2.0 - similarity
+        if selfLower.getCapical().lowercased().starts(with: other) {
+            similarity += 1
+        }
+        
+//        NSLog("distance of \(self) : \(other) is \(3.0 - similarity)")
+        return 3.0 - similarity
+    }
+    
+    func transformToPinyin() -> String {
+        let stringRef = NSMutableString(string: self) as CFMutableString
+        // 转换为带音标的拼音
+        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false);
+        // 去掉音标
+        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false);
+        let pinyin = stringRef as String;
+        return pinyin
+    }
+    
+    func isIncludeChinese() -> Bool {
+        for ch in self.unicodeScalars {
+            // 中文字符范围：0x4e00 ~ 0x9fff
+            if (0x4e00 < ch.value  && ch.value < 0x9fff) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func getCapical() -> String {
+        
+        let capitals = self.capitalized
+        var capitalStr = ""
+        
+        for ch in capitals {
+            if ch <= "Z" && ch >= "A" {
+                capitalStr.append(ch)
+            }
+        }
+        return capitalStr
     }
     
     public func longestCommonSubsequence(_ other: String) -> String {
