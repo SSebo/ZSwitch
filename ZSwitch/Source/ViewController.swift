@@ -17,7 +17,6 @@ class ViewController: NSViewController {
     var currentAppIndex = 0
     var keyQdownCount = 0
     var _userInput = ""
-    var userInputNeedCoolDown = false
     var backView: BackView?
     var label: NSTextField?
     var timer = Timer()
@@ -35,13 +34,6 @@ class ViewController: NSViewController {
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
-                if userInputNeedCoolDown {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
-                        self.userInputNeedCoolDown = false
-                    })
-                    _userInput = ""
-                    return
-                }
                 clearUserInputWork.cancel()
                 _userInput = newValue
                 orderedAppModels = _appModels.sorted {
@@ -49,9 +41,6 @@ class ViewController: NSViewController {
                 }
                 clearUserInputWork = DispatchWorkItem { self._userInput = "" }
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearUserInputWork)
-//                orderedAppModels = orderedAppModels.filter {
-//                    $0.name?.lcsDistance(self.userInput) == 3
-//                }
                 reCalculateSize(count: orderedAppModels.count)
             }
             _userInput = newValue
@@ -225,7 +214,7 @@ class ViewController: NSViewController {
                     currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
                 }
             } else if type == KeyDown && keycode == Key.q.carbonKeyCode {
-                processKeyQdown()
+                    processKeyQdown()
             } else if type == KeyDown && keycode == Key.delete.carbonKeyCode {
                 if userInput.count > 0 {
                     let index = userInput.index(userInput.endIndex, offsetBy: -1)
@@ -264,7 +253,6 @@ class ViewController: NSViewController {
         }
         if keyQdownCount < 20 { return }
         keyQdownCount = 0
-        self.userInputNeedCoolDown = true
         _userInput = ""
         let pid = orderedAppModels[currentAppIndex].pid!
         terminateApp(pid: pid)

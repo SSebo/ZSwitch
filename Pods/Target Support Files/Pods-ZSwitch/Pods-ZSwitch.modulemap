@@ -1,6 +1,0 @@
-framework module Pods_ZSwitch {
-  umbrella header "Pods-ZSwitch-umbrella.h"
-
-  export *
-  module * { export * }
-}
