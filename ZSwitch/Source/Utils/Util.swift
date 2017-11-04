@@ -12,8 +12,8 @@ var itemExpectSize = 90
 var itemActualSize = 90
 let screenRect = NSScreen.main?.frame
 let gapWidth = 4
-let leftRightMinMargin = 10
-var leftRightActualMargin = 10
+let leftRightMinMargin = 50
+var leftRightActualMargin = 50
 let KeyDown = 10
 let KeyUp = 11
 let ModifiersChange = 12
@@ -54,7 +54,7 @@ func createAppItem(appModel: AppModel, index: Int) -> AppItemView {
 
 func createInputLabel() -> NSTextField {
     let label = NSTextField()
-    let width = 200
+    let width = 400
     label.frame = NSRect(x: (Int((screenRect?.width)!) - width) / 2 , y: Int((screenRect?.height)!/2) + 50, width: width, height: 18)
     label.textColor = NSColor(red:0.85, green:0.85, blue:0.85, alpha:1.00)
     label.isBezeled = false
@@ -68,7 +68,7 @@ func createInputLabel() -> NSTextField {
 
 func reCalculateSize(count: Int) {
     let totalUsedWidth = (count - 1) * gapWidth + count * itemExpectSize
-    if totalUsedWidth <= Int((screenRect?.width)!) + 2 * (leftRightMinMargin) {
+    if totalUsedWidth <= Int((screenRect?.width)!) - 2 * (leftRightMinMargin) {
         itemActualSize = itemExpectSize
         leftRightActualMargin = (Int((screenRect?.width)!) - totalUsedWidth) / 2
         if leftRightActualMargin < leftRightMinMargin {

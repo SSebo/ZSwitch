@@ -15,7 +15,9 @@ class ViewController: NSViewController {
     var isOptionPressing = false
     var isShowingUI = false
     var currentAppIndex = 0
+    var keyQdownCount = 0
     var _userInput = ""
+    var userInputNeedCoolDown = false
     var backView: BackView?
     var label: NSTextField?
     var timer = Timer()
@@ -23,6 +25,7 @@ class ViewController: NSViewController {
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
     var clearUserInputWork: DispatchWorkItem = DispatchWorkItem { }
+    var clearKeyQCountWork: DispatchWorkItem = DispatchWorkItem { }
     
     var userInput: String {
         get {
@@ -32,25 +35,27 @@ class ViewController: NSViewController {
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
+                if userInputNeedCoolDown {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
+                        self.userInputNeedCoolDown = false
+                    })
+                    _userInput = ""
+                    return
+                }
                 clearUserInputWork.cancel()
                 _userInput = newValue
                 orderedAppModels = _appModels.sorted {
-                    let dis0 = $0.name?.lcsDistance(self.userInput)
-                    let dis1 = $1.name?.lcsDistance(self.userInput)
-//                    NSLog("\($0.name): \(dis0)")
-//                    NSLog("\($1.name): \(dis1)")
-
-                    return  dis0! < dis1!
+                    ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
                 clearUserInputWork = DispatchWorkItem { self._userInput = "" }
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearUserInputWork)
 //                orderedAppModels = orderedAppModels.filter {
-//                    $0.name?.lcsDistance(self.userInput) == 2
+//                    $0.name?.lcsDistance(self.userInput) == 3
 //                }
+                reCalculateSize(count: orderedAppModels.count)
             }
             _userInput = newValue
             currentAppIndex = 0
-           
         }
     }
     
@@ -103,8 +108,8 @@ class ViewController: NSViewController {
                 }
             }
 
-            if _appModels.count > 0 {
-                reCalculateSize(count: _appModels.count)
+            if orderedAppModels.count > 0 {
+                reCalculateSize(count: orderedAppModels.count)
             }
             if !isShowingUI {
                 orderedAppModels = _appModels
@@ -187,34 +192,16 @@ class ViewController: NSViewController {
     }
   
 // MARK: - user interaction
+    
     @objc func interceptKeyChange(keycode: Int32, type: Int32) -> Bool {
-
 //        NSLog("current index: \(currentAppIndex)")
 //        NSLog("keycode: \(keycode) type: \(type)")
-        if (UInt32(keycode) == Key.command.carbonKeyCode) {
-            self.isCommandPressing = !self.isCommandPressing
-        }
-        if (UInt32(keycode) == Key.shift.carbonKeyCode) {
-            self.isShiftPressing = !self.isShiftPressing
-        }
-        if (UInt32(keycode) == Key.option.carbonKeyCode) {
-            self.isOptionPressing = !self.isOptionPressing
-        }
+        assert(currentAppIndex < appModels.count)
+        updateModifierKeyState(keycode)
 
-        if currentAppIndex >= appModels.count {
-            currentAppIndex = 0
-            return true
-        }
-        
-        if !isCommandPressing && isShowingUI {
-            NSApp.windows[0].orderOut(nil)
-            let v = appItemViews[currentAppIndex]
-            v.appModel?.app.activate(options: .activateIgnoringOtherApps)
-            afterSelectApp(appName: v.appModel?.name)
-            
-        } else if isCommandPressing && keycode == Key.tab.carbonKeyCode {
+        if isCommandPressing && keycode == Key.tab.carbonKeyCode {
             // TODO: current active app, if not in first order, should replace to first
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
                 if self.isShowingUI == false { return }
                 NSApp.windows[0].orderFrontRegardless()
             })
@@ -226,27 +213,26 @@ class ViewController: NSViewController {
                     currentAppIndex = (currentAppIndex + 1) % appItemViews.count
                 }
             }
-        } else if isShowingUI && keycode == Key.grave.carbonKeyCode {
-            NSApp.windows[0].orderFrontRegardless()
-            if (type == KeyDown && appItemViews.count > 0) {
-                currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
-            }
-        } else if isShowingUI && isOptionPressing && keycode == Key.q.carbonKeyCode {
-            if (type == KeyDown && appItemViews.count > 0) {
-                let pid = orderedAppModels[currentAppIndex].pid!
-                terminateApp(pid: pid)
-                orderedAppModels = orderedAppModels.filter{ $0.pid != pid }
-                appModels = appModels.filter{ $0.pid != pid}
-                currentAppIndex = currentAppIndex % appModels.count
-            }
-        } else if isShowingUI && Key.isAlphabetKey(code: UInt32(keycode)) {
-            if type == KeyUp {
+        } else if isShowingUI {
+            if !isCommandPressing {
+                NSApp.windows[0].orderOut(nil)
+                let v = appItemViews[currentAppIndex]
+                v.appModel?.app.activate(options: .activateIgnoringOtherApps)
+                afterSelectApp(appName: v.appModel?.name)
+            } else if type == KeyDown && keycode == Key.grave.carbonKeyCode {
+                NSApp.windows[0].orderFrontRegardless()
+                if (appItemViews.count > 0) {
+                    currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
+                }
+            } else if type == KeyDown && keycode == Key.q.carbonKeyCode {
+                processKeyQdown()
+            } else if type == KeyDown && keycode == Key.delete.carbonKeyCode {
+                if userInput.count > 0 {
+                    let index = userInput.index(userInput.endIndex, offsetBy: -1)
+                    userInput = String(userInput[..<index])
+                }
+            } else if type == KeyUp && Key.isAlphabetKey(code: UInt32(keycode)) {
                 userInput += Key.toAlphabelt(keycode: UInt32(keycode))
-            }
-        }  else if isShowingUI && keycode == Key.delete.carbonKeyCode {
-            if userInput.count > 0 && type == KeyDown {
-                let index = userInput.index(userInput.endIndex, offsetBy: -1)
-                userInput = String(userInput[..<index])
             }
         }
         
@@ -254,7 +240,39 @@ class ViewController: NSViewController {
         if isShowingUI { return false }
         else { return true }
     }
-
+    
+    fileprivate func updateModifierKeyState(_ keycode: Int32) {
+        if (UInt32(keycode) == Key.command.carbonKeyCode) {
+            self.isCommandPressing = !self.isCommandPressing
+        }
+        if (UInt32(keycode) == Key.shift.carbonKeyCode) {
+            self.isShiftPressing = !self.isShiftPressing
+        }
+        if (UInt32(keycode) == Key.option.carbonKeyCode) {
+            self.isOptionPressing = !self.isOptionPressing
+        }
+    }
+    
+    fileprivate func processKeyQdown() {
+        keyQdownCount += 1
+        clearKeyQCountWork.cancel()
+        clearKeyQCountWork = DispatchWorkItem { self.keyQdownCount = 0 }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: clearKeyQCountWork)
+        if keyQdownCount > 5 {
+            let name = orderedAppModels[currentAppIndex].name
+            self._userInput = "hold 'Com+Q' 2s to quit '\(name!)'"
+        }
+        if keyQdownCount < 20 { return }
+        keyQdownCount = 0
+        self.userInputNeedCoolDown = true
+        _userInput = ""
+        let pid = orderedAppModels[currentAppIndex].pid!
+        terminateApp(pid: pid)
+        orderedAppModels = orderedAppModels.filter{ $0.pid != pid }
+        appModels = appModels.filter{ $0.pid != pid}
+        currentAppIndex = currentAppIndex % appModels.count
+    }
+    
     override func mouseDown(with theEvent: NSEvent) {
         NSApp.windows[0].orderOut(nil)
     }
