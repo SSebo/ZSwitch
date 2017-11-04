@@ -32,7 +32,7 @@ func createBackView() -> BackView {
 
 func getSingletonCircleCounter(counter: JWGCircleCounter?, left: Int) -> JWGCircleCounter {
     let x = Int((screenRect?.width)!/2) - 16 - left
-    let y = Int((screenRect?.height)!/2 + 52)
+    let y = Int((screenRect?.height)!/2 + 54)
     let rect = NSRect(x:x, y:y, width: 10, height: 10)
     var c:JWGCircleCounter? = counter
     if (counter == nil) {
@@ -64,10 +64,14 @@ func createAppItem(appModel: AppModel, index: Int) -> AppItemView {
     let appItem = AppItemView()
     appItem.appModel = appModel
     appItem.size = itemActualSize
+    appItem.view.frame = getAppItemFrame(index: index)
+    return appItem
+}
+
+func getAppItemFrame(index: Int) -> NSRect {
     let x = Int(leftRightActualMargin + index * (itemActualSize + gapWidth))
     let y = Int((screenRect?.height)!)/2 -  2 * itemActualSize / 3
-    appItem.view.frame = NSRect(x: x, y:y , width: Int(itemActualSize), height: itemActualSize + 30)
-    return appItem
+    return NSRect(x: x, y:y , width: Int(itemActualSize), height: itemActualSize + 30)
 }
 
 func getInputLabel(label: NSTextField?) -> NSTextField {

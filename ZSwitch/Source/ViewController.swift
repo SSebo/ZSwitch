@@ -72,7 +72,6 @@ class ViewController: NSViewController {
                 for (index,item) in self.appItemViews.enumerated() {
                     if index == self.currentAppIndex {
                         item.isActive = true
-                        item.view.addSubview(createActiveSign())
                     }
                     self.view.addSubview(item.view)
                 }
@@ -147,9 +146,14 @@ class ViewController: NSViewController {
     fileprivate func updateAppItemViews() {
         var appItemViews:[AppItemView] = []
         for (index, appModel) in orderedAppModels.enumerated() {
-            let appItem = createAppItem(appModel: appModel, index: index)
-            appItem.afterSelectApp = afterSelectApp
-            appItemViews.append(appItem)
+            var appItem = self.appItemViews.first(where: {$0.appModel?.pid == appModel.pid})
+            if appItem == nil {
+                appItem = createAppItem(appModel: appModel, index: index)
+                appItem?.afterSelectApp = afterSelectApp
+            } else {
+                appItem?.view.frame = getAppItemFrame(index: index)
+            }
+            appItemViews.append(appItem!)
         }
         self.appItemViews = appItemViews
     }

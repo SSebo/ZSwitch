@@ -13,6 +13,7 @@ class AppItemView: NSViewController {
     @IBOutlet weak var label: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
     var appModel: AppModel?
+    var activeSign: NSView?
     var afterSelectApp: ((String?) -> Void)?
     var _size = 100
     var _isActive = false
@@ -26,6 +27,11 @@ class AppItemView: NSViewController {
             _isActive = newValue
             if _isActive {
                 label?.textColor = NSColor(red:0.92, green:0.93, blue:0.94, alpha:1.00)
+                activeSign = createActiveSign()
+                self.view.addSubview(activeSign!)
+            } else {
+                self.activeSign?.removeFromSuperview()
+                label?.textColor = NSColor(red:0.45, green:0.45, blue:0.45, alpha:0.8)
             }
         }
     }
