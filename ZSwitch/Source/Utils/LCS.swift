@@ -14,7 +14,7 @@ extension String {
         } else {
             selfLower = self.lowercased()
         }
-
+        
         var short = selfLower
         var long = otherLower
         if selfLower.count >= otherLower.count {
@@ -25,7 +25,7 @@ extension String {
         let lcs = selfLower.longestCommonSubsequence(otherLower)
         var similarity = Double(lcs.count) / Double(max(self.count, other.count))
         
-        if long.starts(with: short) {
+        if long.range(of: short) != nil {
             similarity += 1
         }
         

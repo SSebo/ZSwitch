@@ -27,8 +27,12 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type,
                              CGEventRef event, void *refcon) {
     
     int64_t keycode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
-    
+//    NSDate *methodStart = [NSDate date];
     if (callback((int)keycode, (int)type)) {
+//        NSDate *methodFinish = [NSDate date];
+//        NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+//        NSLog(@"keyboard hook executionTime = %f", executionTime);
+        
         return event;
     }
     return nil;

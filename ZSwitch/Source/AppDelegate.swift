@@ -13,12 +13,13 @@ import FMDB
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow?
-    var controller: NSViewController?
+    var controller: ViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.collectionBehavior = .moveToActiveSpace
         window?.backgroundColor = NSColor.clear
+
         window?.isOpaque = false
         window?.ignoresMouseEvents = false
         
@@ -32,7 +33,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func startup() {
         controller = ViewController()
-        KeyboardHook.start((controller as! ViewController).interceptKeyChange)
+        DispatchQueue.global().async {
+            KeyboardHook.start(self.controller?.interceptKeyChange)
+        }
         let content = window!.contentView! as NSView
         let view = controller!.view
         content.addSubview(view)

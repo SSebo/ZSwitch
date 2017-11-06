@@ -39,7 +39,6 @@ class ViewController: NSViewController {
                 orderedAppModels = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
-//                resetCountDownTimer()
             }
             updateLable(stringValue: self._userInput)
         }
@@ -122,11 +121,15 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         self.updateAppModels(force: true)
         orderedAppModels = appModels
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 2, repeats: true, block: { (_)  in 
-                self.updateAppModels(force: false)
-        })
-        
+
+        if #available(OSX 10.12, *) { // more effecient
+            Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { (_) in
+                self.updateAppModelsForce()
+            }
+        } else {
+            let timer = Timer(timeInterval: 2, target: self, selector: #selector(updateAppModelsForce), userInfo: nil, repeats: true)
+            RunLoop.current.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+        }
         // TODO: NSWorkspaceWillLaunchApplicationNotification notice app launch ?
     }
 
@@ -148,6 +151,9 @@ class ViewController: NSViewController {
     }
     
     fileprivate func updateAppItemViews() {
+        if !Thread.isMainThread {
+            return
+        }
         var appItemViews:[AppItemView] = []
         for (index, appModel) in orderedAppModels.enumerated() {
             var appItem = self.appItemViews.first(where: {$0.appModel?.pid == appModel.pid})
@@ -184,6 +190,12 @@ class ViewController: NSViewController {
         isShowingUI = false
         userInput = ""
     }
+    
+    @objc func updateAppModelsForce () {
+        DispatchQueue.global().async {
+            self.updateAppModels(force: true)
+        }
+    }
 
     fileprivate func updateAppModels(force: Bool) {
         if !isShowingUI && !force {
@@ -207,14 +219,27 @@ class ViewController: NSViewController {
 //        NSLog("keycode: \(keycode) type: \(type)")
         updateModifierKeyState(keycode)
         if (self.orderedAppModels.count <= 0) { return true }
-
         if isCommandPressing && keycode == Key.tab.carbonKeyCode {
+            isShowingUI = true
+        }
+        
+        DispatchQueue.main.async {
+            self.keyChangeProcess(keycode: keycode, type: type)
+        }
+        
+        if isShowingUI { return false }
+        else { return true }
+    }
+    
+    fileprivate func keyChangeProcess(keycode: Int32, type: Int32) {
+        if isCommandPressing && keycode == Key.tab.carbonKeyCode {
+            isShowingUI = true
+            
             // TODO: current active app, if not in first order, should replace to first
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
                 if self.isShowingUI == false { return }
                 NSApp.windows[0].orderFrontRegardless()
             })
-            isShowingUI = true
             if (type == KeyDown && appItemViews.count > 0) {
                 if (isShiftPressing) {
                     currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
@@ -232,7 +257,7 @@ class ViewController: NSViewController {
                     currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
                 }
             } else if type == KeyDown && keycode == Key.q.carbonKeyCode {
-                    processKeyQdown()
+                processKeyQdown()
             } else if type == KeyDown && keycode == Key.delete.carbonKeyCode {
                 if userInput.count > 0 {
                     let index = userInput.index(userInput.endIndex, offsetBy: -1)
@@ -246,20 +271,19 @@ class ViewController: NSViewController {
             }
         }
         
-//        NSLog("\(userInput) \(userInput.count) \(type != KeyUp)")
+        //        NSLog("\(userInput) \(userInput.count) \(type != KeyUp)")
         if userInput.count > 0 && type != KeyDown {
             resetCountDownTimer()
         }
         
         updateAppItemViews()
-        if isShowingUI { return false }
-        else { return true }
     }
     
     fileprivate func launchOrActiveApp() {
-            let v = self.appItemViews[self.currentAppIndex]
-            v.appModel?.app.activate(options: .activateIgnoringOtherApps)
-            self.afterSelectApp(appName: v.appModel?.name)
+        let v = self.appItemViews[self.currentAppIndex]
+        v.appModel?.app.activate(options: .activateIgnoringOtherApps)
+        NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+        self.afterSelectApp(appName: v.appModel?.name)
     }
     
     fileprivate func resetCountDownTimer() {
