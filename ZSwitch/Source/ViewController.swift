@@ -21,7 +21,7 @@ class ViewController: NSViewController {
     var circleCounter: JWGCircleCounter?
     var label: NSTextField?
     var timer = Timer()
-    var orderedAppModels: [AppModel] = []
+    var _orderedAppModels: [AppModel] = []
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
     var clearUserInputWork: DispatchWorkItem = DispatchWorkItem { }
@@ -36,18 +36,22 @@ class ViewController: NSViewController {
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
-                clearUserInputWork.cancel()
                 orderedAppModels = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
-                clearUserInputWork = DispatchWorkItem {
-                    self._userInput = ""
-                    self.label?.removeFromSuperview()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1,
-                                              execute: clearUserInputWork)
+//                resetCountDownTimer()
             }
             updateLable(stringValue: self._userInput)
+        }
+    }
+    
+    var orderedAppModels: [AppModel] {
+        get {
+            return _orderedAppModels
+        }
+        set {
+            _orderedAppModels = newValue
+            updateAppItemViews()
         }
     }
     
@@ -76,22 +80,23 @@ class ViewController: NSViewController {
             return _appModels
         }
         set {
-            for app in newValue { // app add
-                let find = _appModels.first(where: {$0.name == app.name})
+            for model in newValue { // app add
+                let find = _appModels.first(where: {$0.name == model.name})
                 if find == nil {
-                    _appModels.append(app)
-                    orderedAppModels.append(app)
+                    _appModels.append(model)
+                    orderedAppModels.append(model)
                 } else {
-                    find?.pid = app.pid
+                    find?.pid = model.pid
+                    find?.app = model.app
                 }
             }
-            for (index, app) in _appModels.enumerated() { // app quit
-                if newValue.first(where: {$0.name == app.name}) == nil {
+            for (index, model) in _appModels.enumerated() { // app quit
+                if newValue.first(where: {$0.name == model.name}) == nil {
                     _appModels.remove(at: index)
                 }
             }
-            for (index, app) in orderedAppModels.enumerated() { // app quit
-                if newValue.first(where: {$0.name == app.name}) == nil {
+            for (index, model) in orderedAppModels.enumerated() { // app quit
+                if newValue.first(where: {$0.name == model.name}) == nil {
                     orderedAppModels.remove(at: index)
                 }
             }
@@ -117,11 +122,12 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         self.updateAppModels(force: true)
         orderedAppModels = appModels
-        timer = Timer.scheduledTimer(withTimeInterval: 2,
-                                     repeats: true,
-                                     block: { (_)  in
-            self.updateAppModels(force: false)
+        timer = Timer.scheduledTimer(
+            withTimeInterval: 2, repeats: true, block: { (_)  in 
+                self.updateAppModels(force: false)
         })
+        
+        // TODO: NSWorkspaceWillLaunchApplicationNotification notice app launch ?
     }
 
 // MARK: - view manipulation
@@ -219,9 +225,7 @@ class ViewController: NSViewController {
         } else if isShowingUI {
             if !isCommandPressing {
                 NSApp.windows[0].orderOut(nil)
-                let v = appItemViews[currentAppIndex]
-                v.appModel?.app.activate(options: .activateIgnoringOtherApps)
-                afterSelectApp(appName: v.appModel?.name)
+                launchOrActiveApp()
             } else if type == KeyDown && keycode == Key.grave.carbonKeyCode {
                 NSApp.windows[0].orderFrontRegardless()
                 if (appItemViews.count > 0) {
@@ -237,14 +241,36 @@ class ViewController: NSViewController {
             } else if type == KeyUp && Key.isAlphabetKey(code: UInt32(keycode)) {
                 if shouldInput() {
                     userInput += Key.toAlphabelt(keycode: UInt32(keycode))
-                    addCycleCounterView(withSeconds: 1, offset: userInput.count)
+                    currentAppIndex = 0
                 }
             }
+        }
+        
+//        NSLog("\(userInput) \(userInput.count) \(type != KeyUp)")
+        if userInput.count > 0 && type != KeyDown {
+            resetCountDownTimer()
         }
         
         updateAppItemViews()
         if isShowingUI { return false }
         else { return true }
+    }
+    
+    fileprivate func launchOrActiveApp() {
+            let v = self.appItemViews[self.currentAppIndex]
+            v.appModel?.app.activate(options: .activateIgnoringOtherApps)
+            self.afterSelectApp(appName: v.appModel?.name)
+    }
+    
+    fileprivate func resetCountDownTimer() {
+        addCycleCounterView(withSeconds: 1, offset: userInput.count)
+        clearUserInputWork.cancel()
+        clearUserInputWork = DispatchWorkItem {
+            self.userInput = ""
+            self.label?.removeFromSuperview()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1,
+                                      execute: clearUserInputWork)
     }
     
     fileprivate func updateModifierKeyState(_ keycode: Int32) {
@@ -277,7 +303,7 @@ class ViewController: NSViewController {
             self.circleCounter?.removeFromSuperview()
             self.updateLable(stringValue: "")
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500), execute: clearKeyQCountWork)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: clearKeyQCountWork)
         
         let name = orderedAppModels[currentAppIndex].name
         let s = "hold 'Com+Q' 2s to quit '\(name!)'"
@@ -286,7 +312,7 @@ class ViewController: NSViewController {
             addCycleCounterView(withSeconds: 2, offset: s.count)
         }
         
-        if keyQdownCount == 20 {
+        if keyQdownCount == 30 {
             keyQdownCount = -20
             self.circleCounter?.removeFromSuperview()
             let pid = orderedAppModels[currentAppIndex].pid!

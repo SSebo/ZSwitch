@@ -113,7 +113,10 @@ func reCalculateSize(count: Int) {
 
 func terminateApp(pid: pid_t) {
     let runingApp = NSWorkspace.shared.runningApplications.first(where: {$0.processIdentifier == pid})
-    runingApp?.forceTerminate()
+    let res = runingApp?.forceTerminate()
+    if !res! {
+        NSLog("Failed to terminate \(runingApp?.localizedName ?? "")")
+    }
 }
 
 extension Array {
