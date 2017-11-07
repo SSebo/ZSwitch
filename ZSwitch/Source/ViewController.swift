@@ -151,7 +151,10 @@ class ViewController: NSViewController {
     }
     
     fileprivate func updateAppItemViews() {
-        if !Thread.isMainThread {
+//        if !Thread.isMainThread {
+//            return
+//        }
+        if !isShowingUI {
             return
         }
         var appItemViews:[AppItemView] = []
@@ -161,7 +164,9 @@ class ViewController: NSViewController {
                 appItem = createAppItem(appModel: appModel, index: index)
                 appItem?.afterSelectApp = afterSelectApp
             } else {
-                appItem?.view.frame = getAppItemFrame(index: index)
+                DispatchQueue.main.async {
+                    appItem?.view.frame = getAppItemFrame(index: index)
+                }
             }
             appItemViews.append(appItem!)
         }
@@ -221,6 +226,7 @@ class ViewController: NSViewController {
         if (self.orderedAppModels.count <= 0) { return true }
         if isCommandPressing && keycode == Key.tab.carbonKeyCode {
             isShowingUI = true
+            
         }
         
         DispatchQueue.main.async {
@@ -281,7 +287,7 @@ class ViewController: NSViewController {
     
     fileprivate func launchOrActiveApp() {
         let v = self.appItemViews[self.currentAppIndex]
-        v.appModel?.app.activate(options: .activateIgnoringOtherApps)
+        v.appModel?.app?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((v.appModel?.name)!)
         self.afterSelectApp(appName: v.appModel?.name)
     }
@@ -327,7 +333,8 @@ class ViewController: NSViewController {
             self.circleCounter?.removeFromSuperview()
             self.updateLable(stringValue: "")
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: clearKeyQCountWork)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1),
+                                      execute: clearKeyQCountWork)
         
         let name = orderedAppModels[currentAppIndex].name
         let s = "hold 'Com+Q' 2s to quit '\(name!)'"

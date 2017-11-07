@@ -119,6 +119,27 @@ func terminateApp(pid: pid_t) {
     }
 }
 
+func getNotRunningApps() -> [AppModel] {
+    var apps:[AppModel] = []
+    
+    let dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
+                                                       .userDomainMask, true)
+    let fileManager = FileManager.default
+    for path in dirPaths {
+        let enumerator = fileManager.enumerator(atPath: path)!
+        NSLog("path is \(path)")
+        while let element = enumerator.nextObject() as? String {
+            if element.hasSuffix("app") { // checks the extension
+                NSLog("app is \(element)")
+//                let app = AppModel(name: element, icon: NSImage())
+//                apps.append(app)
+            }
+        }
+    }
+    
+    return apps
+}
+
 extension Array {
     mutating func rearrange(from: Int, to: Int) {
         insert(remove(at: from), at: to)
@@ -131,4 +152,24 @@ class BackView: NSView {
     }
 }
 
+class TextField: NSTextField {
+    override var usesSingleLineMode: Bool {
+        set {}
+        get { return false }
+    }
+    
+    override var lineBreakMode: NSParagraphStyle.LineBreakMode {
+        set {}
+        get { return .byWordWrapping }
+    }
+    
+    override var stringValue: String {
+        didSet {
+//            NSLog("\(stringValue) \(stringValue.count) \(frame.width)")
+            if stringValue.count * 7 > Int(frame.width) {
+                self.cell?.font = NSFont.systemFont(ofSize: 10)
+            }
+        }
+    }
+}
 

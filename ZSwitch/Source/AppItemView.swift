@@ -10,7 +10,7 @@ import Cocoa
 
 class AppItemView: NSViewController {
 
-    @IBOutlet weak var label: NSTextField!
+    @IBOutlet weak var label: TextField!
     @IBOutlet weak var imageView: NSImageView!
     var appModel: AppModel?
     var activeSign: NSView?
@@ -43,15 +43,17 @@ class AppItemView: NSViewController {
             if _size == newValue { return }
             
             _size = newValue
-            self.view.frame = NSRect(x:0, y: 0, width: _size, height: _size + 30)
-            self.imageView.setFrameSize(NSSize(width: _size, height: _size))
-            self.imageView.imageScaling = .scaleAxesIndependently
-            self.label.frame = NSRect(x: 0, y: Int(self.imageView.frame.minY - 20) , width: _size, height: 20)
+            DispatchQueue.main.async {
+                self.view.frame = NSRect(x:0, y: 0, width: self.self._size, height: self._size + 30)
+                self.imageView.setFrameSize(NSSize(width: self._size, height: self._size))
+                self.imageView.imageScaling = .scaleAxesIndependently
+                self.label.frame = NSRect(x: 0, y: Int(self.imageView.frame.minY - 30) , width: self._size, height: 30)
+            }
         }
     }
 
     override func mouseDown(with theEvent: NSEvent) {
-        appModel?.app.activate(options: .activateIgnoringOtherApps)
+        appModel?.app?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((self.appModel?.name)!)
         NSApp.windows[0].orderOut(nil)
         self.afterSelectApp?(self.appModel?.name)
