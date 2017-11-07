@@ -51,7 +51,7 @@ func getSingletonCircleCounter(counter: JWGCircleCounter?, left: Int) -> JWGCirc
 
 func createActiveSign() -> NSView {
     let x = itemActualSize/2 - 3
-    let y = itemActualSize + 22
+    let y = itemActualSize + 28
     let activeSign = NSView()
     let frame = NSRect(x: x, y: y, width: activeSignSize, height: activeSignSize)
     activeSign.wantsLayer = true
@@ -61,18 +61,28 @@ func createActiveSign() -> NSView {
     return activeSign
 }
 
+var totalAppItemViews: [AppItemView] = []
+
 func createAppItem(appModel: AppModel, index: Int) -> AppItemView {
-    let appItem = AppItemView()
-    appItem.appModel = appModel
-    appItem.size = itemActualSize
-    appItem.view.frame = getAppItemFrame(index: index)
-    return appItem
+    var appItem = totalAppItemViews.first {$0.appModel?.name! == appModel.name}
+    if appItem == nil {
+        appItem = AppItemView()
+        appItem?.appModel = appModel
+        totalAppItemViews.append(appItem!)
+    }
+    appItem?.appModel = appModel
+    appItem?.size = itemActualSize
+    DispatchQueue.main.async {
+        appItem?.view.frame = getAppItemFrame(index: index)
+    }
+    return appItem!
 }
 
 func getAppItemFrame(index: Int) -> NSRect {
+    //    NSLog("index \(index) size: \(itemActualSize)")
     let x = Int(leftRightActualMargin + index * (itemActualSize + gapWidth))
-    let y = Int((screenRect?.height)!)/2 -  2 * itemActualSize / 3
-    return NSRect(x: x, y:y , width: Int(itemActualSize), height: itemActualSize + 30)
+    let y = Int((screenRect?.height)!)/2 -  3 * itemActualSize / 4
+    return NSRect(x: x, y:y , width: Int(itemActualSize), height: itemActualSize + 34)
 }
 
 func getInputLabel(label: NSTextField?) -> NSTextField {
@@ -92,7 +102,7 @@ func getInputLabel(label: NSTextField?) -> NSTextField {
     let width = 400
     l.frame = NSRect(x: (Int((screenRect?.width)!) - width) / 2 , y: Int((screenRect?.height)!/2) + 50, width: width, height: 18)
     l.layer?.zPosition = 100
-
+    
     return l
 }
 
@@ -119,22 +129,47 @@ func terminateApp(pid: pid_t) {
     }
 }
 
-func getNotRunningApps() -> [AppModel] {
-    var apps:[AppModel] = []
+func getNotRunningApps(runnings: [AppModel], norunnings: [AppModel]) -> [AppModel] {
+    var apps:[AppModel] = norunnings
     
     let dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
-                                                       .userDomainMask, true)
+                                                       [.localDomainMask], true)
     let fileManager = FileManager.default
     for path in dirPaths {
-        let enumerator = fileManager.enumerator(atPath: path)!
-        NSLog("path is \(path)")
-        while let element = enumerator.nextObject() as? String {
-            if element.hasSuffix("app") { // checks the extension
-                NSLog("app is \(element)")
-//                let app = AppModel(name: element, icon: NSImage())
-//                apps.append(app)
+        do {
+            let filenames = try fileManager.contentsOfDirectory(atPath: path)
+            
+            for name in filenames {
+                if !name.hasSuffix("app") {
+                    continue
+                }
+                if runnings.first(where: {$0.name! + ".app" == name}) != nil {
+                    continue
+                }
+                if norunnings.first(where: {$0.name! + ".app" == name}) != nil {
+                    continue
+                }
+                
+                let tmpPath = NSString.init(string: path).strings(byAppendingPaths: [name]).first!
+                let contentsPath = tmpPath + "/Contents"
+                let plist = NSDictionary.init(contentsOfFile: contentsPath + "/Info.plist")
+                var iconName = plist?.object(forKey: "CFBundleIconFile") as? String ?? ""
+                if iconName == "" {
+//                    NSLog("\(contentsPath) icon name missing")
+                } else {
+                    if !iconName.hasSuffix("icns") {
+                        iconName += ".icns"
+                    }
+                    let iconPath = contentsPath + "/Resources/" + String(describing: iconName)
+                    let image = NSImage.init(byReferencingFile: iconPath)
+                    NSLog(iconPath)
+//                    NSLog("icon \(image)")
+                    let n = name[..<name.index(name.endIndex, offsetBy: -4)]
+                    let app = AppModel(name: String(n), icon: image!)
+                    apps.append(app)
+                }
             }
-        }
+        } catch {}
     }
     
     return apps
@@ -163,9 +198,9 @@ class TextField: NSTextField {
         get { return .byWordWrapping }
     }
     
-    override var stringValue: String {
+    override var frame: NSRect {
         didSet {
-//            NSLog("\(stringValue) \(stringValue.count) \(frame.width)")
+            //            NSLog("\(stringValue) \(stringValue.count) \(frame.width) \(bounds.width)")
             if stringValue.count * 7 > Int(frame.width) {
                 self.cell?.font = NSFont.systemFont(ofSize: 10)
             }

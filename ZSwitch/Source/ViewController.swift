@@ -22,6 +22,7 @@ class ViewController: NSViewController {
     var label: NSTextField?
     var timer = Timer()
     var _orderedAppModels: [AppModel] = []
+    var notRunningAppModels: [AppModel] = []
     var _appModels:[AppModel] = []
     var _appItemViews: [AppItemView] = []
     var clearUserInputWork: DispatchWorkItem = DispatchWorkItem { }
@@ -36,9 +37,35 @@ class ViewController: NSViewController {
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
-                orderedAppModels = _appModels.sorted {
+                var tmpApps = _appModels.sorted {
                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
                 }
+                let beforeCount = tmpApps.count
+                tmpApps = tmpApps.filter {
+                    $0.name?.lcsDistance(self.userInput) != 4}
+                let afterCount = tmpApps.count
+                let n = beforeCount - afterCount
+                
+                notRunningAppModels.sort(by: {
+                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
+                })
+                let firstN = notRunningAppModels[0..<n]
+                for na in firstN {
+                    tmpApps.append(na)
+                }
+                tmpApps.sort(by: { (a, b) -> Bool in
+                    var distanceA = a.name?.lcsDistance(self.userInput)
+                    var distanceB = b.name?.lcsDistance(self.userInput)
+                    
+                    if a.pid != nil {
+                        distanceA = distanceA! - 0.5
+                    }
+                    if b.pid != nil {
+                        distanceB = distanceB! - 0.5
+                    }
+                    return distanceA! < distanceB!
+                })
+                orderedAppModels = tmpApps
             }
             updateLable(stringValue: self._userInput)
         }
@@ -83,10 +110,9 @@ class ViewController: NSViewController {
                 let find = _appModels.first(where: {$0.name == model.name})
                 if find == nil {
                     _appModels.append(model)
-                    orderedAppModels.append(model)
                 } else {
                     find?.pid = model.pid
-                    find?.app = model.app
+                    find?.runningApp = model.runningApp
                 }
             }
             for (index, model) in _appModels.enumerated() { // app quit
@@ -94,15 +120,7 @@ class ViewController: NSViewController {
                     _appModels.remove(at: index)
                 }
             }
-            for (index, model) in orderedAppModels.enumerated() { // app quit
-                if newValue.first(where: {$0.name == model.name}) == nil {
-                    orderedAppModels.remove(at: index)
-                }
-            }
 
-            if orderedAppModels.count > 0 {
-                reCalculateSize(count: orderedAppModels.count)
-            }
             if !isShowingUI {
                 orderedAppModels = _appModels
             }
@@ -151,24 +169,17 @@ class ViewController: NSViewController {
     }
     
     fileprivate func updateAppItemViews() {
-//        if !Thread.isMainThread {
-//            return
-//        }
-        if !isShowingUI {
+        if !Thread.isMainThread {
             return
+        }
+        if orderedAppModels.count > 0 {
+            reCalculateSize(count: orderedAppModels.count)
         }
         var appItemViews:[AppItemView] = []
         for (index, appModel) in orderedAppModels.enumerated() {
-            var appItem = self.appItemViews.first(where: {$0.appModel?.pid == appModel.pid})
-            if appItem == nil {
-                appItem = createAppItem(appModel: appModel, index: index)
-                appItem?.afterSelectApp = afterSelectApp
-            } else {
-                DispatchQueue.main.async {
-                    appItem?.view.frame = getAppItemFrame(index: index)
-                }
-            }
-            appItemViews.append(appItem!)
+            let appItem = createAppItem(appModel: appModel, index: index)
+            appItem.afterSelectApp = afterSelectApp
+            appItemViews.append(appItem)
         }
         self.appItemViews = appItemViews
     }
@@ -202,7 +213,7 @@ class ViewController: NSViewController {
         }
     }
 
-    fileprivate func updateAppModels(force: Bool) {
+fileprivate func updateAppModels(force: Bool) {
         if !isShowingUI && !force {
             return
         }
@@ -215,6 +226,7 @@ class ViewController: NSViewController {
             }
         }
         self.appModels = tmpModels
+        self.notRunningAppModels = getNotRunningApps(runnings: self.appModels, norunnings: self.notRunningAppModels)
     }
   
 // MARK: - user interaction
@@ -287,7 +299,7 @@ class ViewController: NSViewController {
     
     fileprivate func launchOrActiveApp() {
         let v = self.appItemViews[self.currentAppIndex]
-        v.appModel?.app?.activate(options: .activateIgnoringOtherApps)
+        v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((v.appModel?.name)!)
         self.afterSelectApp(appName: v.appModel?.name)
     }

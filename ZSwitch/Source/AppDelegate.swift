@@ -24,7 +24,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window?.ignoresMouseEvents = false
         
         acquirePrivilegesAndStart()
-        getNotRunningApps()
 //        testDb()
     }
 

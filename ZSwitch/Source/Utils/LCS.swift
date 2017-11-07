@@ -30,11 +30,11 @@ extension String {
         }
         
         if selfLower.getCapical().lowercased().starts(with: other) {
-            similarity += 1
+            similarity += 2
         }
         
 //        NSLog("distance of \(self) : \(other) is \(3.0 - similarity)")
-        return 3.0 - similarity
+        return 4.0 - similarity
     }
     
     func transformToPinyin() -> String {

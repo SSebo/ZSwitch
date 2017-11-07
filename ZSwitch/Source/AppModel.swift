@@ -13,11 +13,11 @@ class AppModel {
         self.name = name
         self.icon = icon
         self.pid = -1
-        self.app = nil
+        self.runningApp = nil
     }
     
     init(app: NSRunningApplication?) {
-        self.app = app!
+        self.runningApp = app!
         self.icon = app?.icon
         self.name = app?.localizedName
         self.pid = app?.processIdentifier
@@ -26,5 +26,5 @@ class AppModel {
     var icon: NSImage?
     var name: String?
     var pid: pid_t?
-    var app: NSRunningApplication?
+    var runningApp: NSRunningApplication?
 }
