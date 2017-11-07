@@ -162,7 +162,7 @@ func getNotRunningApps(runnings: [AppModel], norunnings: [AppModel]) -> [AppMode
                     }
                     let iconPath = contentsPath + "/Resources/" + String(describing: iconName)
                     let image = NSImage.init(byReferencingFile: iconPath)
-                    NSLog(iconPath)
+//                    NSLog(iconPath)
 //                    NSLog("icon \(image)")
                     let n = name[..<name.index(name.endIndex, offsetBy: -4)]
                     let app = AppModel(name: String(n), icon: image!)

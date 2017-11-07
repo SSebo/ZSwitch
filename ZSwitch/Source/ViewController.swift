@@ -27,7 +27,8 @@ class ViewController: NSViewController {
     var _appItemViews: [AppItemView] = []
     var clearUserInputWork: DispatchWorkItem = DispatchWorkItem { }
     var clearKeyQCountWork: DispatchWorkItem = DispatchWorkItem { }
-    
+    var sortAppWork: DispatchWorkItem = DispatchWorkItem { }
+
     var userInput: String {
         get {
             return _userInput
@@ -37,35 +38,12 @@ class ViewController: NSViewController {
             if newValue == "" {
                 orderedAppModels = _appModels
             } else {
-                var tmpApps = _appModels.sorted {
-                    ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
+                sortAppWork.cancel()
+                sortAppWork = DispatchWorkItem {
+                    self.sortAppModels()
                 }
-                let beforeCount = tmpApps.count
-                tmpApps = tmpApps.filter {
-                    $0.name?.lcsDistance(self.userInput) != 4}
-                let afterCount = tmpApps.count
-                let n = beforeCount - afterCount
-                
-                notRunningAppModels.sort(by: {
-                     ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
-                })
-                let firstN = notRunningAppModels[0..<n]
-                for na in firstN {
-                    tmpApps.append(na)
-                }
-                tmpApps.sort(by: { (a, b) -> Bool in
-                    var distanceA = a.name?.lcsDistance(self.userInput)
-                    var distanceB = b.name?.lcsDistance(self.userInput)
-                    
-                    if a.pid != nil {
-                        distanceA = distanceA! - 0.5
-                    }
-                    if b.pid != nil {
-                        distanceB = distanceB! - 0.5
-                    }
-                    return distanceA! < distanceB!
-                })
-                orderedAppModels = tmpApps
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100),
+                                              execute: sortAppWork)
             }
             updateLable(stringValue: self._userInput)
         }
@@ -106,25 +84,7 @@ class ViewController: NSViewController {
             return _appModels
         }
         set {
-            for model in newValue { // app add
-                let find = _appModels.first(where: {$0.name == model.name})
-                if find == nil {
-                    _appModels.append(model)
-                } else {
-                    find?.pid = model.pid
-                    find?.runningApp = model.runningApp
-                }
-            }
-            for (index, model) in _appModels.enumerated() { // app quit
-                if newValue.first(where: {$0.name == model.name}) == nil {
-                    _appModels.remove(at: index)
-                }
-            }
-
-            if !isShowingUI {
-                orderedAppModels = _appModels
-            }
-            updateAppItemViews()
+            updateAppModels(newValue)
         }
     }
     
@@ -213,7 +173,7 @@ class ViewController: NSViewController {
         }
     }
 
-fileprivate func updateAppModels(force: Bool) {
+    fileprivate func updateAppModels(force: Bool) {
         if !isShowingUI && !force {
             return
         }
@@ -227,6 +187,65 @@ fileprivate func updateAppModels(force: Bool) {
         }
         self.appModels = tmpModels
         self.notRunningAppModels = getNotRunningApps(runnings: self.appModels, norunnings: self.notRunningAppModels)
+    }
+    
+    fileprivate func sortAppModels() {
+        var tmpApps:[AppModel] = []
+        let count = _appModels.count
+        tmpApps += _appModels
+        tmpApps += notRunningAppModels
+//        var tmpApps = _appModels.sorted {
+//            ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
+//        }
+//        let beforeCount = tmpApps.count
+//        tmpApps = tmpApps.filter {
+//            $0.name?.lcsDistance(self.userInput) != 4}
+//        let afterCount = tmpApps.count
+//        let n = beforeCount - afterCount
+//
+//        notRunningAppModels.sort(by: {
+//            ($0.name?.lcsDistance(self.userInput))! < ($1.name?.lcsDistance(self.userInput))!
+//        })
+//        let firstN = notRunningAppModels[0..<n]
+//        for na in firstN {
+//            tmpApps.append(na)
+//        }
+        tmpApps.sort(by: { (a, b) -> Bool in
+            var distanceA = a.name?.lcsDistance(self.userInput)
+            var distanceB = b.name?.lcsDistance(self.userInput)
+            
+            if a.pid != nil {
+                distanceA = distanceA! - 0.5
+            }
+            if b.pid != nil {
+                distanceB = distanceB! - 0.5
+            }
+            return distanceA! < distanceB!
+        })
+        let t = tmpApps[0..<count]
+        orderedAppModels = Array(t)
+    }
+    
+    fileprivate func updateAppModels(_ newValue: [AppModel]) {
+        for model in newValue { // app add
+            let find = _appModels.first(where: {$0.name == model.name})
+            if find == nil {
+                _appModels.append(model)
+            } else {
+                find?.pid = model.pid
+                find?.runningApp = model.runningApp
+            }
+        }
+        for (index, model) in _appModels.enumerated() { // app quit
+            if newValue.first(where: {$0.name == model.name}) == nil {
+                _appModels.remove(at: index)
+            }
+        }
+        
+        if !isShowingUI {
+            orderedAppModels = _appModels
+        }
+        updateAppItemViews()
     }
   
 // MARK: - user interaction
@@ -280,6 +299,8 @@ fileprivate func updateAppModels(force: Bool) {
                 if userInput.count > 0 {
                     let index = userInput.index(userInput.endIndex, offsetBy: -1)
                     userInput = String(userInput[..<index])
+                } else {
+                    orderedAppModels = appModels
                 }
             } else if type == KeyUp && Key.isAlphabetKey(code: UInt32(keycode)) {
                 if shouldInput() {
@@ -308,7 +329,8 @@ fileprivate func updateAppModels(force: Bool) {
         addCycleCounterView(withSeconds: 1, offset: userInput.count)
         clearUserInputWork.cancel()
         clearUserInputWork = DispatchWorkItem {
-            self.userInput = ""
+//            self.userInput = ""
+            self._userInput = ""
             self.label?.removeFromSuperview()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1,

@@ -33,7 +33,7 @@ extension String {
             similarity += 2
         }
         
-//        NSLog("distance of \(self) : \(other) is \(3.0 - similarity)")
+//        NSLog("distance of \(self) : \(other) is \(4.0 - similarity)")
         return 4.0 - similarity
     }
     
