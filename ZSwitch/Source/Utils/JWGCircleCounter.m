@@ -14,9 +14,7 @@
 
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSDate *lastStartTime;
-
 @property (assign, nonatomic) NSTimeInterval totalTime;
-
 @property (assign, nonatomic) NSTimeInterval completedTimeUpToLastStop;
 
 @end

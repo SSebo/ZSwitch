@@ -29,8 +29,12 @@ extension String {
             similarity += 1
         }
         
+        if selfLower.starts(with: other) {
+            similarity += 1
+        }
+        
         if selfLower.getCapical().lowercased().starts(with: other) {
-            similarity += 2
+            similarity += 1
         }
         
 //        NSLog("distance of \(self) : \(other) is \(4.0 - similarity)")

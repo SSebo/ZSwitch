@@ -42,6 +42,8 @@ func getSingletonCircleCounter(counter: JWGCircleCounter?, left: Int) -> JWGCirc
         c?.circleBackgroundColor = NSColor.clear
         c?.circleColor = NSColor(red:0.16, green:0.97, blue:0.18, alpha:1.00)
     } else {
+        c?.stop() // otherwise will start lots of timer, comsume high cpu
+        c?.reset()
         c?.setFrameOrigin(NSPoint(x: x, y: y))
     }
     c?.layer?.zPosition = 100
@@ -141,6 +143,9 @@ func getNotRunningApps(runnings: [AppModel], norunnings: [AppModel]) -> [AppMode
             
             for name in filenames {
                 if !name.hasSuffix("app") {
+                    continue
+                }
+                if name == "ZSwitch.app" {
                     continue
                 }
                 if runnings.first(where: {$0.name! + ".app" == name}) != nil {
