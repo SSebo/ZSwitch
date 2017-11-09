@@ -98,6 +98,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addAppsComeGoObserver()
         self.getRunningAppModels()
         orderedAppModels = appModels
         self.notRunningAppModels = getNotRunningApps(
@@ -107,6 +108,32 @@ class ViewController: NSViewController {
     override func mouseDown(with theEvent: NSEvent) {
         NSApp.windows[0].orderOut(nil)
     }
+    
+    // MARK: - apps come and go
+    func addAppsComeGoObserver() {
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(foremostAppActivated),
+            name: NSWorkspace.didActivateApplicationNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(appLaunchedOrTerminated),
+            name: NSWorkspace.didLaunchApplicationNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(appLaunchedOrTerminated),
+            name: NSWorkspace.didTerminateApplicationNotification, object: nil)
+    }
+    
+    @objc func foremostAppActivated(notification: NSNotification) {
+        let app = notification.userInfo?[
+            AnyHashable("NSWorkspaceApplicationKey")] as! NSRunningApplication
+        afterSelectApp(appName: app.localizedName)
+    }
+    
+    @objc func appLaunchedOrTerminated(notification: NSNotification) {
+        self.getRunningAppModels()
+        self.notRunningAppModels = getNotRunningApps(
+            runnings: self.appModels, norunnings: self.notRunningAppModels)
+    }
+
     
     // MARK: - view manipulation
     fileprivate func clearViews() {
@@ -158,9 +185,7 @@ class ViewController: NSViewController {
                 }
             }
         }
-        
         _appModels.rearrange(from: currentAppIndex, to: 0)
-        updateAppItemViews()
         currentAppIndex = 0
         isShowingUI = false
         userInput = ""
@@ -182,12 +207,24 @@ class ViewController: NSViewController {
     fileprivate func sortAppModels() {
         var tmpApps:[AppModel] = []
         let count = _appModels.count
-        tmpApps += _appModels
-        tmpApps += notRunningAppModels
+        
+        for i in _appModels {
+            if tmpApps.first(where: {$0.name == i.name}) == nil {
+                tmpApps.append(i)
+            }
+        }
+        for i in notRunningAppModels {
+            if tmpApps.first(where: {$0.name == i.name}) == nil {
+                tmpApps.append(i)
+            }
+        }
+//        tmpApps += _appModels
+//        tmpApps += notRunningAppModels
+        
         DispatchQueue.global().async {
             tmpApps.sort(by: { (a, b) -> Bool in
-                var distanceA = a.name?.lcsDistance(self.userInput)
-                var distanceB = b.name?.lcsDistance(self.userInput)
+                var distanceA = a.name?.distance(self.userInput)
+                var distanceB = b.name?.distance(self.userInput)
                 
                 if a.pid != -1 {
                     distanceA = distanceA! - 0.5
@@ -226,7 +263,6 @@ class ViewController: NSViewController {
         }
         
         orderedAppModels = _appModels
-        updateAppItemViews()
     }
     
     // MARK: - user interaction
@@ -236,11 +272,9 @@ class ViewController: NSViewController {
         //        NSLog("keycode: \(keycode) type: \(type)")
         updateModifierKeyState(keycode)
         if (self.orderedAppModels.count <= 0) { return true }
-        if isCommandPressing && keycode == Key.tab.carbonKeyCode {
-            if !isShowingUI {
-                isShowingUI = true
-                willShowUI()
-            }
+        if isCommandPressing && keycode == Key.tab.carbonKeyCode && !isShowingUI {
+            isShowingUI = true
+            willShowUI()
         }
         if isShowingUI {
             DispatchQueue.main.async {
@@ -291,12 +325,12 @@ class ViewController: NSViewController {
         if userInput.count > 0 && type != KeyDown {
             resetCountDownTimer()
         }
-        
-        updateAppItemViews()
+        if isShowingUI {
+            updateAppItemViews()
+        }
     }
     
     fileprivate func willShowUI() {
-        getRunningAppModels()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
             if self.isShowingUI == false { return }
             NSApp.windows[0].orderFrontRegardless()
@@ -304,15 +338,14 @@ class ViewController: NSViewController {
     }
     
     fileprivate func launchOrActiveApp() {
+        isShowingUI = false
         let v = self.appItemViews[self.currentAppIndex]
-        v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((v.appModel?.name)!)
-        self.afterSelectApp(appName: v.appModel?.name)
+        v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
     }
     
     fileprivate func didLaunchOrActiveApp() {
-        self.notRunningAppModels = getNotRunningApps(
-            runnings: self.appModels, norunnings: self.notRunningAppModels)
+       
     }
     
     fileprivate func launchIfCommandNotPress() {

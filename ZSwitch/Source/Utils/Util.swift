@@ -91,6 +91,7 @@ func getInputLabel(label: NSTextField?) -> NSTextField {
     let l: NSTextField
     if label != nil {
         l = label!
+        l.stringValue = ""
     } else {
         l = NSTextField()
         l.textColor = NSColor(red:0.85, green:0.85, blue:0.85, alpha:1.00)

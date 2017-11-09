@@ -2,7 +2,7 @@ import Foundation
 
 extension String {
     
-    public func lcsDistance(_ other: String) -> Double {
+    public func distance(_ other: String) -> Double {
         if (self.count == 0 && other.count == 0) {
             return 0
         }
@@ -26,7 +26,7 @@ extension String {
         var similarity = Double(lcs.count) / Double(max(self.count, other.count))
         
         if long.range(of: short) != nil {
-            similarity += 1
+            similarity += 0.5
         }
         
         if selfLower.starts(with: other) {
@@ -34,7 +34,7 @@ extension String {
         }
         
         if selfLower.getCapical().lowercased().starts(with: other) {
-            similarity += 1
+            similarity += 1.5
         }
         
 //        NSLog("distance of \(self) : \(other) is \(4.0 - similarity)")

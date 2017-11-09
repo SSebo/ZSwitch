@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window?.ignoresMouseEvents = false
         
         acquirePrivilegesAndStart()
-//        testDb()
+//        openDb()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -66,10 +66,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func testDb() {
-        let fileURL = try! FileManager.default
+    func openDb() {
+        var fileURL = try! FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            .appendingPathComponent("test.sqlite")
+            .appendingPathComponent("com.smart.zswitch")
+        fileURL.appendPathComponent("switch_history.sqlite")
         
         let database = FMDatabase(url: fileURL)
         
@@ -79,18 +80,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         do {
-            try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
-            try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
-            try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
+            try database.executeUpdate("create table switch_history(x text, y text, z text)", values: nil)
+            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
+            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
             
-            let rs = try database.executeQuery("select x, y, z from test", values: nil)
+            let rs = try database.executeQuery("select x, y, z from switch_history", values: nil)
             while rs.next() {
                 if let x = rs.string(forColumn: "x"), let y = rs.string(forColumn: "y"), let z = rs.string(forColumn: "z") {
-                    print("x = \(x); y = \(y); z = \(z)")
+                    NSLog("x = \(x); y = \(y); z = \(z)")
                 }
             }
         } catch {
-            print("failed: \(error.localizedDescription)")
+            NSLog("failed: \(error.localizedDescription)")
         }
         
         database.close()
