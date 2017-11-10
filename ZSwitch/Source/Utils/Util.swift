@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 var itemExpectSize = 90
 var itemActualSize = 90
@@ -18,6 +19,7 @@ let KeyDown = 10
 let KeyUp = 11
 let ModifiersChange = 12
 let activeSignSize = 6
+
 
 func createBackView() -> BackView {
     let backViewWidth = Int((screenRect?.width)!) - (2 * leftRightActualMargin) + 30
@@ -185,6 +187,37 @@ extension Array {
     mutating func rearrange(from: Int, to: Int) {
         insert(remove(at: from), at: to)
     }
+}
+
+class LocationManager: NSObject, CLLocationManagerDelegate {
+    
+    var locationManager: CLLocationManager?
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        NSLog("\(locations[0])")
+    }
+    
+    func getCurrentlocation() {
+        if CLLocationManager.locationServicesEnabled() {
+            NSLog("CLLocationManager.authorizationStatus: ")
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined: NSLog("notDetermined")
+            case .denied: NSLog("denied")
+            default: NSLog("")
+            }
+            if locationManager == nil {
+                locationManager = CLLocationManager()
+            }
+            locationManager?.delegate = self
+            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager?.startUpdatingLocation()
+            
+            NSLog("should start getting location data")
+        } else {
+            NSLog("Location service disabled");
+        }
+    }
+
 }
 
 class BackView: NSView {

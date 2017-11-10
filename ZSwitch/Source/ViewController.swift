@@ -29,6 +29,8 @@ class ViewController: NSViewController {
     var clearUserInputWork: DispatchWorkItem = DispatchWorkItem { }
     var clearKeyQCountWork: DispatchWorkItem = DispatchWorkItem { }
     var sortAppWork: DispatchWorkItem = DispatchWorkItem { }
+    var didActivateWork: DispatchWorkItem = DispatchWorkItem { }
+
     
     var userInput: String {
         get {
@@ -125,7 +127,15 @@ class ViewController: NSViewController {
     @objc func foremostAppActivated(notification: NSNotification) {
         let app = notification.userInfo?[
             AnyHashable("NSWorkspaceApplicationKey")] as! NSRunningApplication
+
+        didActivateWork.cancel()
+        didActivateWork = DispatchWorkItem {
+            DBManager.log(name: app.localizedName!)
+        }
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + .milliseconds(300), execute: didActivateWork)
         afterSelectApp(appName: app.localizedName)
+
     }
     
     @objc func appLaunchedOrTerminated(notification: NSNotification) {
@@ -133,7 +143,6 @@ class ViewController: NSViewController {
         self.notRunningAppModels = getNotRunningApps(
             runnings: self.appModels, norunnings: self.notRunningAppModels)
     }
-
     
     // MARK: - view manipulation
     fileprivate func clearViews() {
@@ -322,7 +331,7 @@ class ViewController: NSViewController {
         }
         
         //        NSLog("\(userInput) \(userInput.count) \(type != KeyUp)")
-        if userInput.count > 0 && type != KeyDown {
+        if userInput.count > 0 && type != KeyDown && keycode != Key.command.carbonKeyCode {
             resetCountDownTimer()
         }
         if isShowingUI {

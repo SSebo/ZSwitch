@@ -7,6 +7,7 @@ target 'ZSwitch' do
 
   # Pods for ZSwitch
   pod 'FMDB'
+  pod 'FMDBMigrationManager'
 
   target 'ZSwitchTests' do
     inherit! :search_paths

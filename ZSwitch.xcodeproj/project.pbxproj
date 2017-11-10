@@ -13,6 +13,8 @@
 		7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B1781FA2F9080070E220 /* KeyboardHook.m */; };
 		7A34B17D1FA3022A0070E220 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B17C1FA3022A0070E220 /* Key.swift */; };
 		7A4A52881FAD6DA700620FB7 /* JWGCircleCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A52871FAD6DA700620FB7 /* JWGCircleCounter.m */; };
+		7A8B02841FB54643002B2547 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B02831FB54643002B2547 /* DBManager.swift */; };
+		7A8B02851FB54643002B2547 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B02831FB54643002B2547 /* DBManager.swift */; };
 		7A91D6BB1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BA1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift */; };
 		7A91D6BD1FA81CD200A143F8 /* LCS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BC1FA81CD200A143F8 /* LCS.swift */; };
 		7A91D6BE1FA81CD200A143F8 /* LCS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A91D6BC1FA81CD200A143F8 /* LCS.swift */; };
@@ -58,6 +60,7 @@
 		7A3BDCA55EFE0822C2BE7A37 /* Pods-ZSwitch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSwitch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4A52861FAD6DA700620FB7 /* JWGCircleCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWGCircleCounter.h; sourceTree = "<group>"; };
 		7A4A52871FAD6DA700620FB7 /* JWGCircleCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWGCircleCounter.m; sourceTree = "<group>"; };
+		7A8B02831FB54643002B2547 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		7A91D6BA1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongestCommonSubsequenceTests.swift; sourceTree = "<group>"; };
 		7A91D6BC1FA81CD200A143F8 /* LCS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCS.swift; sourceTree = "<group>"; };
 		7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -129,6 +132,7 @@
 			children = (
 				7A91D6BF1FA8215F00A143F8 /* Utils */,
 				7AABCFFA1F9DC0AE0038DF50 /* MainMenu.xib */,
+				7A8B02831FB54643002B2547 /* DBManager.swift */,
 				7ACC53531F45A9DB0058755F /* AppItemView.swift */,
 				7ACC53541F45A9DB0058755F /* AppItemView.xib */,
 				7ACC53551F45A9DB0058755F /* AppModel.swift */,
@@ -507,6 +511,7 @@
 				7ABCB0FC1FA08AFA00E09570 /* ZSwitchTests.swift in Sources */,
 				7A91D6BE1FA81CD200A143F8 /* LCS.swift in Sources */,
 				7A91D6BB1FA81C6A00A143F8 /* LongestCommonSubsequenceTests.swift in Sources */,
+				7A8B02851FB54643002B2547 /* DBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +524,7 @@
 				7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */,
 				7ACC535B1F45A9DB0058755F /* AppModel.swift in Sources */,
 				7ACC53591F45A9DB0058755F /* AppItemView.swift in Sources */,
+				7A8B02841FB54643002B2547 /* DBManager.swift in Sources */,
 				7A91D6BD1FA81CD200A143F8 /* LCS.swift in Sources */,
 				7AC998BF1FAC1B1E00B53F22 /* Util.swift in Sources */,
 				7A34B17D1FA3022A0070E220 /* Key.swift in Sources */,

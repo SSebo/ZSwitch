@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import FMDB
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window?.ignoresMouseEvents = false
         
         acquirePrivilegesAndStart()
-//        openDb()
+//        LocationManager().getCurrentlocation()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -50,7 +49,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.messageText = "Enable ZSwitch"
             alert.informativeText = """
             
-            Open System Preferences > Security & Privicy > Accessibility (left panel) > Drag ZSwitch to right panel and checked,
+            Open System Preferences > Security & Privicy > Accessibility (left panel)
+            
+            Drag ZSwitch to right panel and checked,
             
             then restart app.
             """
@@ -66,36 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func openDb() {
-        var fileURL = try! FileManager.default
-            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            .appendingPathComponent("com.smart.zswitch")
-        fileURL.appendPathComponent("switch_history.sqlite")
-        
-        let database = FMDatabase(url: fileURL)
-        
-        guard database.open() else {
-            print("Unable to open database")
-            return
-        }
-        
-        do {
-            try database.executeUpdate("create table switch_history(x text, y text, z text)", values: nil)
-            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
-            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
-            
-            let rs = try database.executeQuery("select x, y, z from switch_history", values: nil)
-            while rs.next() {
-                if let x = rs.string(forColumn: "x"), let y = rs.string(forColumn: "y"), let z = rs.string(forColumn: "z") {
-                    NSLog("x = \(x); y = \(y); z = \(z)")
-                }
-            }
-        } catch {
-            NSLog("failed: \(error.localizedDescription)")
-        }
-        
-        database.close()
-    }
+
 
 }
 

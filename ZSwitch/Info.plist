@@ -30,6 +30,8 @@
 	<string>Copyright © 2017 zhangshibo. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Recommend your apps to open based on most use location</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
