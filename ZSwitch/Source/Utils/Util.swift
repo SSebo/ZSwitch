@@ -11,7 +11,7 @@ import CoreLocation
 
 var itemExpectSize = 90
 var itemActualSize = 90
-let screenRect = NSScreen.main?.frame
+var screenRect = NSScreen.main?.frame
 let gapWidth = 4
 let leftRightMinMargin = 50
 var leftRightActualMargin = 50
@@ -137,8 +137,12 @@ func terminateApp(pid: pid_t) {
 func getNotRunningApps(runnings: [AppModel], norunnings: [AppModel]) -> [AppModel] {
     var apps:[AppModel] = norunnings
     
-    let dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
+    var dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
                                                        [.localDomainMask], true)
+    assert(dirPaths.count > 0)
+    let appFolder = dirPaths[0]
+    let utilitiesFolder = appFolder + "/Utilities"
+    dirPaths.append(utilitiesFolder)
     let fileManager = FileManager.default
     for path in dirPaths {
         do {

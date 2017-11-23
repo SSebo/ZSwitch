@@ -122,6 +122,15 @@ class ViewController: NSViewController {
         NSWorkspace.shared.notificationCenter.addObserver(
             self, selector: #selector(appLaunchedOrTerminated),
             name: NSWorkspace.didTerminateApplicationNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(appDidHide),
+            name: NSWorkspace.didHideApplicationNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(appDidDeactive),
+            name: NSWorkspace.didDeactivateApplicationNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(appDidChangeResolution),
+            name: NSApplication.didChangeScreenParametersNotification, object: nil)
     }
     
     @objc func foremostAppActivated(notification: NSNotification) {
@@ -136,6 +145,18 @@ class ViewController: NSViewController {
             deadline: .now() + .milliseconds(300), execute: didActivateWork)
         afterSelectApp(appName: app.localizedName)
 
+    }
+    
+    @objc func appDidHide(notification: NSNotification) {
+//        NSLog("app \(notification) did hide")
+    }
+    
+    @objc func appDidDeactive(notification: NSNotification) {
+//        NSLog("app \(notification) did deactive")
+    }
+    
+    @objc func appDidChangeResolution(notification: NSNotification) {
+        screenRect = NSScreen.main?.frame
     }
     
     @objc func appLaunchedOrTerminated(notification: NSNotification) {
@@ -296,7 +317,7 @@ class ViewController: NSViewController {
     }
     
     fileprivate func keyChangeProcess(keycode: Int32, type: Int32) {
-        if !isCommandPressing && !isCoolingDown {
+        if !isCommandPressing {
             launchIfCommandNotPress()
         } else if type == KeyDown && keycode == Key.return.carbonKeyCode {
             launchAnyway()
@@ -354,11 +375,12 @@ class ViewController: NSViewController {
     }
     
     fileprivate func didLaunchOrActiveApp() {
-       
+       self.userInput = ""
     }
     
     fileprivate func launchIfCommandNotPress() {
-        if !isCommandPressing && !isCoolingDown {
+//        if !isCommandPressing && !isCoolingDown {
+        if !isCommandPressing {
             launchAnyway()
         }
     }

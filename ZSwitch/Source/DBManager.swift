@@ -33,11 +33,16 @@ class DBManager {
             NSLog("Unable to open database")
             return
         }
+        let now = Date()
+        let formatter = DateFormatter()
+        // initially set the format based on your datepicker date
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
+        let nowStr = formatter.string(from: now)
         do {
             try database.executeUpdate(
-                "INSERT INTO switch_history (APP_NAME, TIME) values (?,?)",
-                values: [name, NSDate()])
+                "INSERT INTO switch_history (APP_NAME, TIME, TIME_STR) values (?,?,?)",
+                values: [name, now, nowStr])
         } catch {
             NSLog("failed: \(error.localizedDescription)")
         }
@@ -68,7 +73,8 @@ class DBManager {
                 CREATE TABLE switch_history(
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     APP_NAME TEXT,
-                    TIME TEXT
+                    TIME TEXT,
+                    TIME_STR TEXT
                 )
             """, values: nil)
         } catch {
@@ -85,22 +91,7 @@ class DBManager {
             NSLog("Unable to open database")
             return
         }
-        
-        //        do {
-        //            try database.executeUpdate("create table switch_history(x text, y text, z text)", values: nil)
-        //            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
-        //            try database.executeUpdate("insert into switch_history (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
-        //
-        //            let rs = try database.executeQuery("select x, y, z from switch_history", values: nil)
-        //            while rs.next() {
-        //                if let x = rs.string(forColumn: "x"), let y = rs.string(forColumn: "y"), let z = rs.string(forColumn: "z") {
-        //                    NSLog("x = \(x); y = \(y); z = \(z)")
-        //                }
-        //            }
-        //        } catch {
-        //            NSLog("failed: \(error.localizedDescription)")
-        //        }
-        
+
         database.close()
     }
 }
