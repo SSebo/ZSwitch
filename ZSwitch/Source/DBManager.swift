@@ -51,10 +51,12 @@ class DBManager {
     
     private func prepareUrl() -> URL {
         var url = try! FileManager.default
-            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .url(for: .applicationSupportDirectory, in: .userDomainMask,
+                 appropriateFor: nil, create: true)
             .appendingPathComponent("ZSwitch")
         do {
-            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(
+                at: url, withIntermediateDirectories: true, attributes: nil)
         } catch {}
         url.appendPathComponent("switch_history.sqlite")
         return url
@@ -70,7 +72,7 @@ class DBManager {
         
         do {
             try database.executeUpdate("""
-                CREATE TABLE switch_history(
+                CREATE TABLE IF NOT EXISTS switch_history (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     APP_NAME TEXT,
                     TIME TEXT,

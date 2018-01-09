@@ -15,12 +15,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var controller: ViewController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!), styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
+        window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!),
+                          styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
         window?.collectionBehavior = .moveToActiveSpace
         window?.backgroundColor = NSColor.clear
-
         window?.isOpaque = false
         window?.ignoresMouseEvents = false
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(appDidChangeResolution),
+            name: NSApplication.didChangeScreenParametersNotification, object: nil)
         
         acquirePrivilegesAndStart()
 //        LocationManager().getCurrentlocation()
@@ -67,7 +71,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-
+    @objc func appDidChangeResolution(notification: NSNotification) {
+        self.window?.setFrame((NSScreen.main?.frame)!, display: true)
+    }
 
 }
 

@@ -48,7 +48,7 @@ class ViewController: NSViewController {
                 DispatchQueue.main.asyncAfter(
                     deadline: .now() + .milliseconds(100), execute: sortAppWork)
             }
-            updateLable(stringValue: self._userInput)
+            updateLabel(stringValue: self._userInput)
         }
     }
     
@@ -157,6 +157,7 @@ class ViewController: NSViewController {
     
     @objc func appDidChangeResolution(notification: NSNotification) {
         screenRect = NSScreen.main?.frame
+        self.view.setFrameSize((screenRect?.size)!)
     }
     
     @objc func appLaunchedOrTerminated(notification: NSNotification) {
@@ -176,7 +177,7 @@ class ViewController: NSViewController {
         }
     }
     
-    fileprivate func updateLable(stringValue: String) {
+    fileprivate func updateLabel(stringValue: String) {
         self.label = getInputLabel(label: self.label)
         self.label?.stringValue = stringValue
         if self.label?.superview == nil {
@@ -276,7 +277,8 @@ class ViewController: NSViewController {
         for model in newValue { // app add
             let found = _appModels.first(where: {$0.name == model.name})
             if found == nil {
-                _appModels.append(model)
+                _appModels.insert(model, at: 0)
+//                _appModels.append(model)
             } else {
                 found?.pid = model.pid
                 found?.runningApp = model.runningApp
@@ -284,7 +286,7 @@ class ViewController: NSViewController {
                     _appModels = _appModels.filter({ $0.name != found?.name})
                     _appModels.insert(found!, at: 0)
                 }
-            }
+            }   
         }
         for (index, model) in _appModels.enumerated() { // app quit
             if newValue.first(where: {$0.name == model.name}) == nil {
@@ -340,8 +342,13 @@ class ViewController: NSViewController {
             if userInput.count > 0 {
                 let index = userInput.index(userInput.endIndex, offsetBy: -1)
                 userInput = String(userInput[..<index])
+                if (userInput == "reset") {
+                    isCommandPressing = false
+                    isShiftPressing = false
+                    userInput = ""
+                }
             } else {
-                self.updateLable(stringValue: "")
+                self.updateLabel(stringValue: "")
                 orderedAppModels = appModels
             }
         } else if type == KeyUp && Key.isAlphabetKey(code: UInt32(keycode)) {
@@ -404,13 +411,15 @@ class ViewController: NSViewController {
             let str = self.userInput + " ⌫"
             self._userInput = "" // not reorder
             //            self.userInput = "" // will reorder
-            self.updateLable(stringValue: str)
+            self.updateLabel(stringValue: str)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1,
                                       execute: clearUserInputWork)
     }
     
     fileprivate func updateModifierKeyState(_ keycode: Int32) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
         if (UInt32(keycode) == Key.command.carbonKeyCode) {
             self.isCommandPressing = !self.isCommandPressing
         }
@@ -438,7 +447,7 @@ class ViewController: NSViewController {
         clearKeyQCountWork = DispatchWorkItem {
             self.keyQdownCount = 0
             self.circleCounter?.removeFromSuperview()
-            self.updateLable(stringValue: "")
+            self.updateLabel(stringValue: "")
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1),
                                       execute: clearKeyQCountWork)
@@ -446,7 +455,7 @@ class ViewController: NSViewController {
         let name = orderedAppModels[currentAppIndex].name
         let s = "hold '⌘+Q' 2s to quit '\(name!)'"
         if keyQdownCount == 5 {
-            updateLable(stringValue: s)
+            updateLabel(stringValue: s)
             addCycleCounterView(withSeconds: 2, offset: s.count)
         }
         
