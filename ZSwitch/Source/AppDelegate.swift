@@ -11,9 +11,20 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+
+    @IBOutlet weak var menu: NSMenu!
     var window: NSWindow?
     var controller: ViewController?
+    var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
+    @IBAction func quitClick(_ sender: Any) {
+        NSApplication.shared.terminate(self)
+    }
+    
+    @IBAction func resetClick(_ sender: Any) {
+        controller?.resetInternalStatus()
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window = NSWindow(contentRect: NSMakeRect(0, 10, (screenRect?.width)!, (screenRect?.height)!),
                           styleMask: .borderless, backing: NSWindow.BackingStoreType.buffered, defer: false)
@@ -27,6 +38,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             name: NSApplication.didChangeScreenParametersNotification, object: nil)
         
         acquirePrivilegesAndStart()
+        statusItem.title = "☯︎"
+        statusItem.menu = menu
 //        LocationManager().getCurrentlocation()
     }
 
@@ -74,6 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func appDidChangeResolution(notification: NSNotification) {
         self.window?.setFrame((NSScreen.main?.frame)!, display: true)
     }
+
 
 }
 

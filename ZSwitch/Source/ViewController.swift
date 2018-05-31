@@ -12,7 +12,6 @@ class ViewController: NSViewController {
     
     var isCommandPressing = false
     var isShiftPressing = false
-    var isOptionPressing = false
     var isShowingUI = false
     var isCoolingDown = false
     var currentAppIndex = 0
@@ -100,7 +99,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addAppsComeGoObserver()
+        addAppsStatObserver()
         self.getRunningAppModels()
         orderedAppModels = appModels
         self.notRunningAppModels = getNotRunningApps(
@@ -108,11 +107,16 @@ class ViewController: NSViewController {
     }
     
     override func mouseDown(with theEvent: NSEvent) {
-        NSApp.windows[0].orderOut(nil)
+        NSApp.windows[1].orderOut(nil)
+    }
+    
+    func resetInternalStatus() {
+        isCommandPressing = false
+        isShiftPressing = false
     }
     
     // MARK: - apps come and go
-    func addAppsComeGoObserver() {
+    func addAppsStatObserver() {
         NSWorkspace.shared.notificationCenter.addObserver(
             self, selector: #selector(foremostAppActivated),
             name: NSWorkspace.didActivateApplicationNotification, object: nil)
@@ -332,7 +336,7 @@ class ViewController: NSViewController {
                 }
             }
         } else if type == KeyDown && keycode == Key.grave.carbonKeyCode {
-            NSApp.windows[0].orderFrontRegardless()
+            NSApp.windows[1].orderFrontRegardless()
             if (appItemViews.count > 0) {
                 currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
             }
@@ -370,14 +374,19 @@ class ViewController: NSViewController {
     fileprivate func willShowUI() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
             if self.isShowingUI == false { return }
-            NSApp.windows[0].orderFrontRegardless()
+            NSApp.windows[1].orderFrontRegardless()
         })
     }
     
     fileprivate func launchOrActiveApp() {
+        let appNotReLaunch = ["Hopper Disassembler v4"]
         isShowingUI = false
         let v = self.appItemViews[self.currentAppIndex]
-        NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+        
+        // TODO: more configurable white list
+        if (!appNotReLaunch.contains((v.appModel?.name)!)) {
+            NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+        }
         v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
     }
     
@@ -393,7 +402,7 @@ class ViewController: NSViewController {
     }
     
     fileprivate func launchAnyway() {
-        NSApp.windows[0].orderOut(nil)
+        NSApp.windows[1].orderOut(nil)
         launchOrActiveApp()
         didLaunchOrActiveApp()
     }
@@ -418,16 +427,18 @@ class ViewController: NSViewController {
     }
     
     fileprivate func updateModifierKeyState(_ keycode: Int32) {
-        objc_sync_enter(self)
-        defer { objc_sync_exit(self) }
+       
         if (UInt32(keycode) == Key.command.carbonKeyCode) {
-            self.isCommandPressing = !self.isCommandPressing
+            DispatchQueue.main.sync {
+                self.isCommandPressing = !self.isCommandPressing
+            }
         }
+        
+        // There is a bug that shift key is not released, to be fixed
         if (UInt32(keycode) == Key.shift.carbonKeyCode) {
-            self.isShiftPressing = !self.isShiftPressing
-        }
-        if (UInt32(keycode) == Key.option.carbonKeyCode) {
-            self.isOptionPressing = !self.isOptionPressing
+            DispatchQueue.main.sync {
+                self.isShiftPressing = !self.isShiftPressing
+            }
         }
     }
     

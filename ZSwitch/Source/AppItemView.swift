@@ -55,7 +55,7 @@ class AppItemView: NSViewController {
     override func mouseDown(with theEvent: NSEvent) {
         appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((self.appModel?.name)!)
-        NSApp.windows[0].orderOut(nil)
+        NSApp.windows[1].orderOut(nil)
         self.afterSelectApp?(self.appModel?.name)
     }
     
