@@ -132,9 +132,13 @@ class ViewController: NSViewController {
         NSWorkspace.shared.notificationCenter.addObserver(
             self, selector: #selector(appDidDeactive),
             name: NSWorkspace.didDeactivateApplicationNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self, selector: #selector(workspaceDidWake),
+            name: NSWorkspace.screensDidWakeNotification, object: nil)
         NotificationCenter.default.addObserver(
             self, selector: #selector(appDidChangeResolution),
             name: NSApplication.didChangeScreenParametersNotification, object: nil)
+
     }
     
     @objc func foremostAppActivated(notification: NSNotification) {
@@ -162,6 +166,10 @@ class ViewController: NSViewController {
     @objc func appDidChangeResolution(notification: NSNotification) {
         screenRect = NSScreen.main?.frame
         self.view.setFrameSize((screenRect?.size)!)
+    }
+    
+    @objc func workspaceDidWake(notification: NSNotification) {
+        resetInternalStatus()
     }
     
     @objc func appLaunchedOrTerminated(notification: NSNotification) {
