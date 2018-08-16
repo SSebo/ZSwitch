@@ -20,6 +20,9 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu id="QMe-Mi-CsO">
             <items>
+                <menuItem title="ZSwitch" enabled="NO" id="Bu9-9V-kqP">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
                 <menuItem title="Reset" keyEquivalent="R" allowsKeyEquivalentWhenHidden="YES" id="c0n-LL-KVJ">
                     <connections>
                         <action selector="resetClick:" target="Voe-Tx-rLC" id="9B0-eh-9u4"/>
@@ -32,7 +35,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="139.5" y="185.5"/>
+            <point key="canvasLocation" x="139.5" y="195.5"/>
         </menu>
     </objects>
 </document>

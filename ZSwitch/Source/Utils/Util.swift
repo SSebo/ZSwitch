@@ -68,7 +68,10 @@ func createActiveSign() -> NSView {
 var totalAppItemViews: [AppItemView] = []
 
 func createAppItem(appModel: AppModel, index: Int) -> AppItemView {
-    var appItem = totalAppItemViews.first {$0.appModel?.name! == appModel.name}
+    var appItem = totalAppItemViews.first {$0.appModel?.pid! == appModel.pid} // app name can be duplicated
+    if appModel.pid == -1 { // not running app, use name find a view
+        appItem = totalAppItemViews.first {$0.appModel?.name! == appModel.name}
+    }
     if appItem == nil {
         appItem = AppItemView()
         appItem?.appModel = appModel

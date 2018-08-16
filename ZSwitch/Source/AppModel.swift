@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class AppModel {
+@objc class AppModel : NSObject {
     init(name: String, icon: NSImage) {
         self.name = name
         self.icon = icon

@@ -14,7 +14,7 @@ class AppItemView: NSViewController {
     @IBOutlet weak var imageView: NSImageView!
     var appModel: AppModel?
     var activeSign: NSView?
-    var afterSelectApp: ((String?) -> Void)?
+    var afterSelectApp: ((AppModel?) -> Void)?
     var _size = 100
     var _isActive = false
     var isActive: Bool {
@@ -56,7 +56,7 @@ class AppItemView: NSViewController {
         appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
         NSWorkspace.shared.launchApplication((self.appModel?.name)!)
         NSApp.windows[1].orderOut(nil)
-        self.afterSelectApp?(self.appModel?.name)
+        self.afterSelectApp?(self.appModel)
     }
     
     override func viewDidLoad() {

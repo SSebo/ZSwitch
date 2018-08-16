@@ -107,7 +107,7 @@ class ViewController: NSViewController {
     }
     
     override func mouseDown(with theEvent: NSEvent) {
-        NSApp.windows[1].orderOut(nil)
+        self.getWindow()?.orderOut(nil)
     }
     
     func resetInternalStatus() {
@@ -151,7 +151,7 @@ class ViewController: NSViewController {
         }
         DispatchQueue.main.asyncAfter(
             deadline: .now() + .milliseconds(300), execute: didActivateWork)
-        afterSelectApp(appName: app.localizedName)
+        afterSelectApp(app: AppModel(app: app))
 
     }
     
@@ -220,10 +220,10 @@ class ViewController: NSViewController {
         self.circleCounter?.start(withSeconds: withSeconds)
     }
     
-    @objc func afterSelectApp(appName: String?) {
-        if let name = appName {
+    @objc func afterSelectApp(app: AppModel?) {
+        if let target = app {
             for (index, app) in appModels.enumerated() {
-                if app.name == name {
+                if app === target {
                     self.currentAppIndex = index
                 }
             }
@@ -287,7 +287,7 @@ class ViewController: NSViewController {
     
     fileprivate func updateAppModels(_ newValue: [AppModel]) {
         for model in newValue { // app add
-            let found = _appModels.first(where: {$0.name == model.name})
+            let found = _appModels.first(where: {$0.pid == model.pid})
             if found == nil {
                 _appModels.insert(model, at: 0)
 //                _appModels.append(model)
@@ -295,13 +295,13 @@ class ViewController: NSViewController {
                 found?.pid = model.pid
                 found?.runningApp = model.runningApp
                 if (model.runningApp?.isActive)! {
-                    _appModels = _appModels.filter({ $0.name != found?.name})
+                    _appModels = _appModels.filter({ $0.pid != found?.pid})
                     _appModels.insert(found!, at: 0)
                 }
             }   
         }
         for (index, model) in _appModels.enumerated() { // app quit
-            if newValue.first(where: {$0.name == model.name}) == nil {
+            if newValue.first(where: {$0.pid == model.pid}) == nil {
                 _appModels.remove(at: index)
             }
         }
@@ -344,7 +344,7 @@ class ViewController: NSViewController {
                 }
             }
         } else if type == KeyDown && keycode == Key.grave.carbonKeyCode {
-            NSApp.windows[1].orderFrontRegardless()
+            self.getWindow()?.orderFrontRegardless()
             if (appItemViews.count > 0) {
                 currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
             }
@@ -382,8 +382,13 @@ class ViewController: NSViewController {
     fileprivate func willShowUI() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
             if self.isShowingUI == false { return }
-            NSApp.windows[1].orderFrontRegardless()
+            self.getWindow()?.orderFrontRegardless()
         })
+    }
+    
+    func getWindow() -> NSWindow? {
+        let w = NSApp.windows[NSApp.windows.count - 1]
+        return w
     }
     
     fileprivate func launchOrActiveApp() {
@@ -393,7 +398,9 @@ class ViewController: NSViewController {
         
         // TODO: more configurable white list
         if (!appNotReLaunch.contains((v.appModel?.name)!)) {
-            NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+            DispatchQueue.main.async {
+                NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+            }
         }
         v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
     }
@@ -410,7 +417,7 @@ class ViewController: NSViewController {
     }
     
     fileprivate func launchAnyway() {
-        NSApp.windows[1].orderOut(nil)
+        self.getWindow()?.orderOut(nil)
         launchOrActiveApp()
         didLaunchOrActiveApp()
     }
