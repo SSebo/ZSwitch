@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0B1D038DC9EAC1926540C38C /* Pods_ZSwitchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13595686D913ADA68AEFE6D5 /* Pods_ZSwitchTests.framework */; };
 		5C0E63EE93158F3A368E4CA6 /* Pods_ZSwitchUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10C2AA93E2BEA8A8797291A /* Pods_ZSwitchUITests.framework */; };
-		60AFB797FF8A711537115A1F /* Pods_ZSwitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */; };
+		7A2CBA0621B8CF2D00CBBA2B /* Pods_ZSwitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFBF85B68E2F0636AB58FF1 /* Pods_ZSwitch.framework */; };
 		7A34B17A1FA2F9080070E220 /* KeyboardHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B1781FA2F9080070E220 /* KeyboardHook.m */; };
 		7A34B17D1FA3022A0070E220 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B17C1FA3022A0070E220 /* Key.swift */; };
 		7A4A52881FAD6DA700620FB7 /* JWGCircleCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A52871FAD6DA700620FB7 /* JWGCircleCounter.m */; };
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60AFB797FF8A711537115A1F /* Pods_ZSwitch.framework in Frameworks */,
+				7A2CBA0621B8CF2D00CBBA2B /* Pods_ZSwitch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,8 +229,6 @@
 				7ABCB0E71FA08AC900E09570 /* Sources */,
 				7ABCB0E81FA08AC900E09570 /* Frameworks */,
 				7ABCB0E91FA08AC900E09570 /* Resources */,
-				03071E0C7805EAF48440AE33 /* [CP] Embed Pods Frameworks */,
-				F79D09E390E75F472419F217 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -250,8 +248,6 @@
 				7ABCB0F51FA08AF900E09570 /* Sources */,
 				7ABCB0F61FA08AF900E09570 /* Frameworks */,
 				7ABCB0F71FA08AF900E09570 /* Resources */,
-				7A9C70C09F2124F8681181BD /* [CP] Embed Pods Frameworks */,
-				56172E59AEE345B1F52146A4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -272,7 +268,6 @@
 				7ACC533D1F45A9560058755F /* Frameworks */,
 				7ACC533E1F45A9560058755F /* Resources */,
 				5509A3D752F80EFE9E3D1F65 /* [CP] Embed Pods Frameworks */,
-				3211C8F10F8F105811E56EFC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -358,64 +353,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03071E0C7805EAF48440AE33 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3211C8F10F8F105811E56EFC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5509A3D752F80EFE9E3D1F65 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDBMigrationManager/FMDBMigrationManager.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDBMigrationManager.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitch/Pods-ZSwitch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		56172E59AEE345B1F52146A4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60AE5297B86943D762CB2D39 /* [CP] Check Pods Manifest.lock */ = {
@@ -424,28 +379,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZSwitch-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		7A9C70C09F2124F8681181BD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchTests/Pods-ZSwitchTests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BCB444BD53C787F085498452 /* [CP] Check Pods Manifest.lock */ = {
@@ -454,13 +397,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZSwitchTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C4C3567DCA29907247700C95 /* [CP] Check Pods Manifest.lock */ = {
@@ -469,28 +415,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZSwitchUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		F79D09E390E75F472419F217 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZSwitchUITests/Pods-ZSwitchUITests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
