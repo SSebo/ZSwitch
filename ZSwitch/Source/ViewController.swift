@@ -107,7 +107,7 @@ class ViewController: NSViewController {
     }
     
     override func mouseDown(with theEvent: NSEvent) {
-        self.getWindow()?.orderOut(nil)
+        self.orderOut()
     }
     
     func resetInternalStatus() {
@@ -223,7 +223,8 @@ class ViewController: NSViewController {
     @objc func afterSelectApp(app: AppModel?) {
         if let target = app {
             for (index, app) in appModels.enumerated() {
-                if app === target {
+                if (app.pid != -1 && app.pid == target.pid)
+                    || (app.pid == -1 && app.name == target.name) {
                     self.currentAppIndex = index
                 }
             }
@@ -343,8 +344,8 @@ class ViewController: NSViewController {
                     currentAppIndex = (currentAppIndex + 1) % appItemViews.count
                 }
             }
-        } else if type == KeyDown && keycode == Key.grave.carbonKeyCode {
-            self.getWindow()?.orderFrontRegardless()
+        } else if type == KeyDown && (keycode == Key.grave.carbonKeyCode || keycode == Key.escape.carbonKeyCode){
+            self.orderFrontRegardless()
             if (appItemViews.count > 0) {
                 currentAppIndex = (currentAppIndex + appItemViews.count - 1) % appItemViews.count
             }
@@ -382,17 +383,26 @@ class ViewController: NSViewController {
     fileprivate func willShowUI() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
             if self.isShowingUI == false { return }
-            self.getWindow()?.orderFrontRegardless()
+            self.orderFrontRegardless()
         })
     }
     
-    func getWindow() -> NSWindow? {
-        let w = NSApp.windows[NSApp.windows.count - 1]
-        return w
+    func orderFrontRegardless() -> Void {
+        
+        for w in NSApp.windows {
+            w.orderFrontRegardless()
+        }
+        return
+    }
+    
+    func orderOut() -> Void {
+        for w in NSApp.windows {
+            w.orderOut(nil)
+        }
     }
     
     fileprivate func launchOrActiveApp() {
-        let appNotReLaunch = ["Hopper Disassembler v4"]
+        let appNotReLaunch = ["Hopper Disassembler v4", "Xcode"]
         isShowingUI = false
         let v = self.appItemViews[self.currentAppIndex]
         
@@ -403,6 +413,7 @@ class ViewController: NSViewController {
             }
         }
         v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
+        NSLog((v.appModel?.name!)!)
     }
     
     fileprivate func didLaunchOrActiveApp() {
@@ -413,11 +424,12 @@ class ViewController: NSViewController {
 //        if !isCommandPressing && !isCoolingDown {
         if !isCommandPressing {
             launchAnyway()
+            NSLog("here")
         }
     }
     
     fileprivate func launchAnyway() {
-        self.getWindow()?.orderOut(nil)
+        self.orderOut()
         launchOrActiveApp()
         didLaunchOrActiveApp()
     }
@@ -428,7 +440,7 @@ class ViewController: NSViewController {
         clearUserInputWork.cancel()
         clearUserInputWork = DispatchWorkItem {
             self.isCoolingDown = false
-            self.launchIfCommandNotPress()
+//            self.launchIfCommandNotPress()
             if self.userInput == "" {
                 return
             }

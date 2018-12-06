@@ -143,10 +143,24 @@ func getNotRunningApps(runnings: [AppModel], norunnings: [AppModel]) -> [AppMode
     var dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
                                                        [.localDomainMask], true)
     assert(dirPaths.count > 0)
+
+    var userDirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory, [.userDomainMask], true)
+    
+    let fileManager = FileManager.default
     let appFolder = dirPaths[0]
+    let userAppFolder = userDirPaths[0]
+    do {
+        let userAppFolderFilenames = try fileManager.contentsOfDirectory(atPath: userAppFolder)
+        for name in userAppFolderFilenames {
+            dirPaths.append(userAppFolder + "/" + name)
+        }
+    }
+    catch {}
+    
     let utilitiesFolder = appFolder + "/Utilities"
     dirPaths.append(utilitiesFolder)
-    let fileManager = FileManager.default
+    dirPaths.append(userAppFolder)
+
     for path in dirPaths {
         do {
             let filenames = try fileManager.contentsOfDirectory(atPath: path)
