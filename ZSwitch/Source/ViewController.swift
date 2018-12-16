@@ -407,9 +407,16 @@ class ViewController: NSViewController {
         let v = self.appItemViews[self.currentAppIndex]
         
         // TODO: more configurable white list
-        if (!appNotReLaunch.contains((v.appModel?.name)!)) {
-            DispatchQueue.main.async {
-                NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+        if !appNotReLaunch.contains((v.appModel?.name)!) {
+            if let bUrl = v.appModel?.runningApp?.bundleURL {
+
+                DispatchQueue.main.async {
+                    do {
+                        try NSWorkspace.shared.launchApplication(at: bUrl, options: .default, configuration: [:])
+                    } catch {
+                        NSLog("failed: \(error.localizedDescription)")
+                    }
+                }
             }
         }
         v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
@@ -424,7 +431,6 @@ class ViewController: NSViewController {
 //        if !isCommandPressing && !isCoolingDown {
         if !isCommandPressing {
             launchAnyway()
-            NSLog("here")
         }
     }
     
