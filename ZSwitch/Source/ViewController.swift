@@ -414,14 +414,18 @@ class ViewController: NSViewController {
         // TODO: more configurable white list
         if !appNotReLaunch.contains((v.appModel?.name)!) {
             if let bUrl = v.appModel?.runningApp?.bundleURL {
-
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { // launch running app
                     do {
                         try NSWorkspace.shared.launchApplication(at: bUrl, options: .default, configuration: [:])
                     } catch {
                         NSLog("failed: \(error.localizedDescription)")
                     }
                 }
+            } else {
+                DispatchQueue.main.async { // launch new app
+                    NSWorkspace.shared.launchApplication((v.appModel?.name)!)
+                }
+                
             }
         }
         v.appModel?.runningApp?.activate(options: .activateIgnoringOtherApps)
