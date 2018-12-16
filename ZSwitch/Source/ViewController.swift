@@ -18,6 +18,7 @@ class ViewController: NSViewController {
     var keyQdownCount = 0
     var _userInput = ""
     var backView: BackView?
+    var mainWindow: NSWindow?
     var circleCounter: JWGCircleCounter?
     var label: NSTextField?
     var timer = Timer()
@@ -388,17 +389,21 @@ class ViewController: NSViewController {
     }
     
     func orderFrontRegardless() -> Void {
-        
-        for w in NSApp.windows {
-            w.orderFrontRegardless()
+        if (mainWindow != nil) {
+            mainWindow?.orderFrontRegardless()
+        } else {
+            for w in NSApp.windows { // find main window
+                if !w.isVisible { // main window is not visible when start
+                    mainWindow = w
+                    w.orderFrontRegardless()
+                }
+            }
         }
-        return
+        
     }
     
     func orderOut() -> Void {
-        for w in NSApp.windows {
-            w.orderOut(nil)
-        }
+        self.mainWindow?.orderOut(nil)
     }
     
     fileprivate func launchOrActiveApp() {
